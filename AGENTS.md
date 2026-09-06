@@ -19,3 +19,17 @@
 
 - For script/task edits, run `bash -n scripts/*.sh`, `jq empty .zed/tasks.json`, and `git diff --check`.
 - Run an actual build only when the Xcode project exists; a complete pipeline test ends with successful IPA installation and launch on the USB-connected iPhone.
+
+## Agent skills
+
+### Issue tracker
+
+Issues and specs live in GitHub Issues. Before tracker operations, read `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Use the five default triage labels. Before triaging, read `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Use a single-context layout. Before exploring the codebase, read `docs/agents/domain.md`.

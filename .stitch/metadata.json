@@ -1,0 +1,96 @@
+{
+  "projectId": "15818295814883565750",
+  "title": "诗词 · 页边入景",
+  "projectUrl": "https://stitch.withgoogle.com/projects/15818295814883565750",
+  "deviceType": "MOBILE",
+  "currentRevision": "R3",
+  "updatedAt": "2026-09-06",
+  "status": "design-prototype-reviewed",
+  "review": "review.html",
+  "designSystem": "assets/990ad9c76a89478ea706323418ab5bae",
+  "designSystemSourceScreen": "14953272719970058",
+  "designSpecification": "DESIGN.md",
+  "viewport": [
+    393,
+    852
+  ],
+  "screenshotSize": [
+    1179,
+    2556
+  ],
+  "preferredScreens": {
+    "today": "560560264617938032",
+    "explore": "560560264617936651",
+    "poet": "560560264617935270",
+    "relations": "560560264617937985",
+    "collection": "560560264617936604"
+  },
+  "screens": [
+    {
+      "id": "560560264617938032",
+      "slug": "today",
+      "title": "R3 /today · 今日 · iPhone 15 Pro",
+      "deviceType": "MOBILE",
+      "html": "round-3/today.html",
+      "staticHtml": "round-3/today-static.html",
+      "screenshot": "round-3/today-3x.png",
+      "width": 393,
+      "height": 852
+    },
+    {
+      "id": "560560264617936651",
+      "slug": "explore",
+      "title": "R3 /explore · 探索 · iPhone 15 Pro",
+      "deviceType": "MOBILE",
+      "html": "round-3/explore.html",
+      "staticHtml": "round-3/explore-static.html",
+      "screenshot": "round-3/explore-3x.png",
+      "width": 393,
+      "height": 852
+    },
+    {
+      "id": "560560264617935270",
+      "slug": "poet",
+      "title": "R3 /poet · 诗人 · iPhone 15 Pro",
+      "deviceType": "MOBILE",
+      "html": "round-3/poet.html",
+      "staticHtml": "round-3/poet-static.html",
+      "screenshot": "round-3/poet-3x.png",
+      "width": 393,
+      "height": 852
+    },
+    {
+      "id": "560560264617937985",
+      "slug": "relations",
+      "title": "R3 /relations · 人物关系 · iPhone 15 Pro",
+      "deviceType": "MOBILE",
+      "html": "round-3/relations.html",
+      "staticHtml": "round-3/relations-static.html",
+      "screenshot": "round-3/relations-3x.png",
+      "width": 393,
+      "height": 852
+    },
+    {
+      "id": "560560264617936604",
+      "slug": "collection",
+      "title": "R3 /collection · 诗集 · iPhone 15 Pro",
+      "deviceType": "MOBILE",
+      "html": "round-3/collection.html",
+      "staticHtml": "round-3/collection-static.html",
+      "screenshot": "round-3/collection-3x.png",
+      "width": 393,
+      "height": 852
+    }
+  ],
+  "provenance": "Local refinement following approved R2 direction; self-contained static HTML exported to Stitch",
+  "stitchVerification": {
+    "method": "get_project.screenInstances",
+    "verifiedAt": "2026-09-05"
+  },
+  "limitations": [
+    "Map is illustrative, without live geographic data",
+    "Life timeline is an unverified-data empty state",
+    "Collection changes are page-local preview state",
+    "Audio, complete poem/person details, backups and native iOS implementation are not connected"
+  ]
+}

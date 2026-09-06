@@ -1,0 +1,129 @@
+{
+  "designSystem": {
+    "displayName": "诗词 · 纸白淡墨",
+    "styleGuidelines": "## Brand & Style\n\nThe brand personality is rooted in the quiet, contemplative nature of classical Chinese poetry. It seeks to evoke a sense of \"literary romance\" and stillness, characterized by the aesthetic of ink on paper. \n\nThe design style is a **refined Minimalism** with an emphasis on white space and rhythmic spacing. It avoids traditional clichés such as yellowed \"parchment\" textures or heavy ornamentation. Instead, it relies on high-quality typography, clear structures, and a restrained color palette to create an immersive reading experience. The interface should feel structured and professional yet warm and poetic.\n\n## Layout & Spacing\n\nThe layout is designed for a focused mobile experience, specifically optimized for high-density displays.\n\n- **Grid:** A single-column layout with generous side margins (28px) to frame the text like a scroll or a book page.\n- **Safe Areas:** Strict adherence to hardware safe areas (59px top, 34px bottom) ensures content remains clear of system overlays.\n- **Navigation:** A fixed bottom navigation bar (83px height) provides three primary anchors: Today, Explore, and Collections.\n- **Interaction:** All interactive elements must maintain a minimum 44px hit area to ensure accessibility.\n- **Scrolling:** The main content area scrolls independently; the navigation bar remains persistent but does not occlude the reading rhythm.\n\n## Elevation & Depth\n\nThis design system rejects heavy shadows and high-contrast card elevations in favor of a flat, layered approach.\n\n- **Flat Tiers:** Depth is communicated through color shifts (e.g., using Pale Grey containers on Paper White backgrounds) rather than shadows.\n- **Dividers:** Fine, subtle lines (#E5E0DA) are used to separate list items and section headers.\n- **Atmosphere:** A \"faint ink\" motif—a subtle, static wash of grey—may be placed in page corners to add depth without interfering with text legibility.\n- **Overlays:** Modals or overlays should use simple, solid backgrounds or very soft, minimal ambient shadows if absolutely necessary to indicate stacking.\n\n## Components\n\n- **Buttons & Controls:** Use Noto Sans. Primary actions use the Rouge (#9C4946) color. Interactive labels and names are highlighted to indicate clickability.\n- **Lists:** Clean, text-heavy lists separated by thin #E5E0DA dividers. No bulky card containers.\n- **Navigation Bar:** Three-item fixed bottom nav. Icons are minimal; the active state is signaled by the primary Rouge color.\n- **Map & Relationship Graphs:** Maps must clearly distinguish between \"places mentioned in poetry\" and \"places where the poet wrote.\" Graphs use sparse nodes with light connecting lines to show relationships between authors and works.\n- **Sound Indicator:** A simple corner icon indicates audio availability; audio is always off by default.\n- **Empty States:** When a poet's writing location is unknown, display a clean empty state rather than approximating data.",
+    "theme": {
+      "bodyFont": "NOTO_SERIF",
+      "bodyFontFamily": "Noto Serif",
+      "colorMode": "LIGHT",
+      "colorVariant": "FIDELITY",
+      "customColor": "#9c4946",
+      "designMd": "---\nname: 诗词 · 纸白淡墨\ncolors:\n  background: '#FAFAF8'\n  surface: '#FAFAF8'\n  on-surface: '#302E2C'\n  primary: '#9C4946'\n  secondary: '#756E68'\n  outline-variant: '#E5E0DA'\n  surface-container-low: '#F4F3F0'\n  surface-dim: '#e7d6d5'\n  surface-bright: '#fff8f7'\n  surface-container-lowest: '#ffffff'\n  surface-container: '#F4F3F0'\n  surface-container-high: '#f5e4e3'\n  surface-container-highest: '#efdfdd'\n  on-surface-variant: '#544241'\n  inverse-surface: '#382e2d'\n  inverse-on-surface: '#feedeb'\n  outline: '#877271'\n  surface-tint: '#974542'\n  on-primary: '#ffffff'\n  primary-container: '#9c4946'\n  on-primary-container: '#ffd5d2'\n  inverse-primary: '#ffb3af'\n  on-secondary: '#ffffff'\n  secondary-container: '#ebe1d9'\n  on-secondary-container: '#6a635d'\n  tertiary: '#00563a'\n  on-tertiary: '#ffffff'\n  tertiary-container: '#00714d'\n  on-tertiary-container: '#97f2c4'\n  error: '#ba1a1a'\n  on-error: '#ffffff'\n  error-container: '#ffdad6'\n  on-error-container: '#93000a'\n  primary-fixed: '#ffdad7'\n  primary-fixed-dim: '#ffb3af'\n  on-primary-fixed: '#3f0306'\n  on-primary-fixed-variant: '#792e2d'\n  secondary-fixed: '#ebe1d9'\n  secondary-fixed-dim: '#cec5be'\n  on-secondary-fixed: '#1f1b16'\n  on-secondary-fixed-variant: '#4c4640'\n  tertiary-fixed: '#9af5c7'\n  tertiary-fixed-dim: '#7ed8ac'\n  on-tertiary-fixed: '#002114'\n  on-tertiary-fixed-variant: '#005236'\n  on-background: '#221a19'\n  surface-variant: '#efdfdd'\n  paper-white: '#FAFAF8'\n  ink-grey: '#302E2C'\n  light-grey: '#E5E0DA'\ntypography:\n  display-page-title:\n    fontFamily: Noto Serif\n    fontSize: 25px\n    fontWeight: '600'\n    lineHeight: 36px\n  headline-verse:\n    fontFamily: Noto Serif\n    fontSize: 23px\n    fontWeight: '500'\n    lineHeight: 47px\n  headline-title:\n    fontFamily: Noto Serif\n    fontSize: 20px\n    fontWeight: '600'\n    lineHeight: 28px\n  body-main:\n    fontFamily: Noto Serif\n    fontSize: 17px\n    fontWeight: '400'\n    lineHeight: 28px\n  label-ui:\n    fontFamily: Noto Sans\n    fontSize: 15px\n    fontWeight: '500'\n    lineHeight: 20px\n  label-auxiliary:\n    fontFamily: Noto Sans\n    fontSize: 12px\n    fontWeight: '400'\n    lineHeight: 16px\n  headline-verse-mobile:\n    fontFamily: Noto Serif\n    fontSize: 21px\n    fontWeight: '500'\n    lineHeight: 42px\nrounded:\n  sm: 0.125rem\n  DEFAULT: 0.25rem\n  md: 0.375rem\n  lg: 0.5rem\n  xl: 0.75rem\n  full: 9999px\nspacing:\n  margin-page: 28px\n  safe-area-top: 59px\n  safe-area-bottom: 34px\n  nav-bar-height: 83px\n  touch-target-min: 44px\n---\n\n# 诗词 · 纸白淡墨\n\n## Visual theme\n已确认的 D 页边入景。中国古诗词阅读，以安静纸白、墨灰文字和少量胭脂红点缀传达文学与浪漫感。避免泛黄底色、大面积绿色、厚卡片与夸张阴影。保留清楚的结构和阅读节奏。\n\n## Color roles\n纸白 #FAFAF8 为阅读底色；墨灰 #302E2C 为主要文本；暖灰 #756E68 为辅助信息；胭脂 #9C4946 用于选中态与少量重点；淡灰 #E5E0DA 为分隔线；地图示意底为 #F4F3F0。\n\n## Typography\n正文与文学标题采用 Noto Serif CJK SC / 宋体风格，控件采用 Noto Sans CJK SC / 系统无衬线。诗句 23px / 47px；作品标题 18–22px；页面标题 25px；控件 14–15px；辅助信息 11–13px。字体需支持完整中文。\n\n## Layout\niPhone 15 Pro：393 × 852 逻辑视口，顶部 59px、底部 34px 安全区示意。正文左右 28px。底部导航总高 83px，今日／探索／诗集固定三入口。内容区域独立滚动，不被底部导航遮挡。图标操作保持 44px 点击区。\n\n## Components\n页角小幅淡墨，静止且不覆盖文字。列表用细线分隔。声音只在页角显示图标；返回仅箭头。关系图用稀疏节点、作品依据与一个读诗动作。人名可点选。地图明确区分诗中之地与写作地. 未知写作地显示空态，不编造坐标。诗集是整首作品收藏列表。\n\n## Interaction and export\n必要过渡，无持续动效。环境声默认关闭。当前为可审阅原型，真实地图、资料与备份尚未接入。导出静态 HTML 内联 CSS/SVG/图片，3 倍截图 1179 × 2556，不放大旧缩略图。",
+      "font": "NOTO_SERIF",
+      "headlineFont": "NOTO_SERIF",
+      "headlineFontFamily": "Noto Serif",
+      "labelFont": "NOTO_SANS",
+      "labelFontFamily": "Noto Sans",
+      "namedColors": {
+        "background": "#fff8f7",
+        "error": "#ba1a1a",
+        "error_container": "#ffdad6",
+        "ink-grey": "#302E2C",
+        "inverse_on_surface": "#feedeb",
+        "inverse_primary": "#ffb3af",
+        "inverse_surface": "#382e2d",
+        "light-grey": "#E5E0DA",
+        "on_background": "#221a19",
+        "on_error": "#ffffff",
+        "on_error_container": "#93000a",
+        "on_primary": "#ffffff",
+        "on_primary_container": "#ffd5d2",
+        "on_primary_fixed": "#3f0306",
+        "on_primary_fixed_variant": "#792e2d",
+        "on_secondary": "#ffffff",
+        "on_secondary_container": "#6a635d",
+        "on_secondary_fixed": "#1f1b16",
+        "on_secondary_fixed_variant": "#4c4640",
+        "on_surface": "#221a19",
+        "on_surface_variant": "#544241",
+        "on_tertiary": "#ffffff",
+        "on_tertiary_container": "#97f2c4",
+        "on_tertiary_fixed": "#002114",
+        "on_tertiary_fixed_variant": "#005236",
+        "outline": "#877271",
+        "outline_variant": "#dac1bf",
+        "paper-white": "#FAFAF8",
+        "primary": "#7e3230",
+        "primary_container": "#9c4946",
+        "primary_fixed": "#ffdad7",
+        "primary_fixed_dim": "#ffb3af",
+        "secondary": "#645d57",
+        "secondary_container": "#ebe1d9",
+        "secondary_fixed": "#ebe1d9",
+        "secondary_fixed_dim": "#cec5be",
+        "surface": "#fff8f7",
+        "surface-container": "#F4F3F0",
+        "surface_bright": "#fff8f7",
+        "surface_container": "#fbeae9",
+        "surface_container_high": "#f5e4e3",
+        "surface_container_highest": "#efdfdd",
+        "surface_container_low": "#fff0ef",
+        "surface_container_lowest": "#ffffff",
+        "surface_dim": "#e7d6d5",
+        "surface_tint": "#974542",
+        "surface_variant": "#efdfdd",
+        "tertiary": "#00563a",
+        "tertiary_container": "#00714d",
+        "tertiary_fixed": "#9af5c7",
+        "tertiary_fixed_dim": "#7ed8ac"
+      },
+      "overridePrimaryColor": "#9c4946",
+      "overrideSecondaryColor": "#756e68",
+      "roundness": "ROUND_FOUR",
+      "spacing": {
+        "margin-page": "28px",
+        "nav-bar-height": "83px",
+        "safe-area-bottom": "34px",
+        "safe-area-top": "59px",
+        "touch-target-min": "44px"
+      },
+      "spacingScale": 2,
+      "typography": {
+        "body-main": {
+          "fontFamily": "Noto Serif",
+          "fontSize": "17px",
+          "fontWeight": "400",
+          "lineHeight": "28px"
+        },
+        "display-page-title": {
+          "fontFamily": "Noto Serif",
+          "fontSize": "25px",
+          "fontWeight": "600",
+          "lineHeight": "36px"
+        },
+        "headline-title": {
+          "fontFamily": "Noto Serif",
+          "fontSize": "20px",
+          "fontWeight": "600",
+          "lineHeight": "28px"
+        },
+        "headline-verse": {
+          "fontFamily": "Noto Serif",
+          "fontSize": "23px",
+          "fontWeight": "500",
+          "lineHeight": "47px"
+        },
+        "headline-verse-mobile": {
+          "fontFamily": "Noto Serif",
+          "fontSize": "21px",
+          "fontWeight": "500",
+          "lineHeight": "42px"
+        },
+        "label-auxiliary": {
+          "fontFamily": "Noto Sans",
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "lineHeight": "16px"
+        },
+        "label-ui": {
+          "fontFamily": "Noto Sans",
+          "fontSize": "15px",
+          "fontWeight": "500",
+          "lineHeight": "20px"
+        }
+      }
+    }
+  },
+  "name": "assets/990ad9c76a89478ea706323418ab5bae",
+  "version": "1"
+}

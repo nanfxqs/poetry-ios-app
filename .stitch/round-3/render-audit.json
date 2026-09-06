@@ -1,0 +1,46 @@
+{
+  "today": {
+    "width": 393,
+    "height": 852,
+    "scrollWidth": 393,
+    "fonts": "loaded",
+    "images": true,
+    "contentBottom": 739,
+    "navTop": 769
+  },
+  "explore": {
+    "width": 393,
+    "height": 852,
+    "scrollWidth": 393,
+    "fonts": "loaded",
+    "images": true,
+    "contentBottom": 769,
+    "navTop": 769
+  },
+  "poet": {
+    "width": 393,
+    "height": 852,
+    "scrollWidth": 393,
+    "fonts": "loaded",
+    "images": true,
+    "contentBottom": 769,
+    "navTop": 769
+  },
+  "relations": {
+    "width": 393,
+    "height": 852,
+    "scrollWidth": 393,
+    "fonts": "loaded",
+    "images": true,
+    "navTop": 769
+  },
+  "collection": {
+    "width": 393,
+    "height": 852,
+    "scrollWidth": 393,
+    "fonts": "loaded",
+    "images": true,
+    "contentBottom": 769,
+    "navTop": 769
+  }
+}

@@ -164,3 +164,25 @@ pymobiledevice3 usbmux list
 ## 调试范围
 
 当前自动化覆盖构建、签名、安装、启动和日志读取，但尚未配置 Zed 内的源码断点或 LLDB 远程调试。
+
+## Stitch 连接与防重复提交
+
+当前设计为 R3 五页原型。页面、高清截图、完成范围与限制见 [当前设计状态](docs/design/current-design.md)，配色与布局见 [.stitch/DESIGN.md](.stitch/DESIGN.md)。旧版本地 HTML 和图片已清理。
+
+Stitch 页面设计使用同一个私有项目。当前会话如未暴露原生 Stitch MCP 工具，可使用仓库内的备用客户端：
+
+```bash
+python3 scripts/stitch-client.py get_project /tmp/stitch-args/project.json /tmp/stitch-project.json
+```
+
+参数依次为工具名、参数 JSON 路径、响应 JSON 路径。API Key 从 `$CODEX_HOME/config.toml`（默认 `~/.codex/config.toml`）的 Stitch 配置读取，不放进命令参数、仓库或输出日志。
+
+- 当前本机 Stitch 配置：`startup_timeout_sec = 30`、`tool_timeout_sec = 600`。原生 MCP 需要重新加载配置后才采用新值；备用客户端每次读取。
+- 备用客户端优先使用 HTTP/2，启用 TCP keepalive，正确区分 SSE 进度通知和匹配请求 ID 的最终响应。不自动重试 HTTP 请求。
+- 同项目修改使用互斥锁。提交前写入持久状态；连接中断后状态为 `unknown`，其他修改会被拦截，即使改写提示词也不重发。完全相同的已完成请求复用已保存响应。
+- 状态放在 `$XDG_STATE_HOME/poetry-stitch/`（默认 `~/.local/state/poetry-stitch/`），每次调用在输出旁保存 `.receipt.json`，记录阶段、耗时和 HTTP 状态，不记录密钥。
+- `unknown` 时只允许查询项目/页面。根据已有请求、生成文件与项目结果核对，不将“查询暂未出现”理解为生成失败。核对清楚后再归档该项目的 `pending.json`，并记录处理依据；不要仅为绕过拦截而删除它。
+- API 返回成功不代表画布已同步。必须核对实际 screen ID、HTML 和画布。不要用另一种生成工具或重新上传来代替状态核对。
+
+回归验证：`python3 -m unittest discover -s tests -p test_stitch_client.py`。
+详细排查结论见 `docs/design/stitch-connection-diagnosis.md`。
