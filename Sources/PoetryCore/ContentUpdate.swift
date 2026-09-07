@@ -81,6 +81,16 @@ public final class PoetryServiceClient {
     public init(credentials: ServiceCredentials, session: URLSession? = nil) {
         self.credentials = credentials; self.session = session ?? URLSession(configuration: .ephemeral, delegate: ServiceRedirectGuard(), delegateQueue: nil)
     }
+    public func downloadAudio(_ audio: AmbientAudio = .stream) async throws -> Data {
+        guard audio == .stream else { throw ContentUpdateError.invalid }
+        var request = URLRequest(url: credentials.baseURL.appendingPathComponent("v1/media/" + audio.id))
+        request.setValue("Bearer " + credentials.token, forHTTPHeaderField: "Authorization")
+        request.timeoutInterval = 30
+        let (data, response) = try await session.data(for: request)
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200,
+              response.url?.host == credentials.baseURL.host, data.count <= 2_000_000 else { throw ContentUpdateError.unavailable }
+        return data
+    }
     public func downloadContent() async throws -> Data {
         var request = URLRequest(url: credentials.baseURL.appendingPathComponent("v1/content"))
         request.setValue("Bearer " + credentials.token, forHTTPHeaderField: "Authorization")

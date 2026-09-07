@@ -46,6 +46,32 @@ class ServiceTests(unittest.TestCase):
                 finally:
                     server.shutdown(); server.server_close(); worker.join()
 
+    def test_audio_requires_auth_exact_allowlist_and_serves_real_verified_pcm(self):
+        import wave
+        import io
+        with tempfile.TemporaryDirectory() as directory:
+            server = create_server(('127.0.0.1', 0), str(Path(directory) / 'db'), 't' * 32)
+            worker = threading.Thread(target=server.serve_forever)
+            worker.start()
+            try:
+                for endpoint, auth, expected in [('/v1/media/swale-v1.wav', '', 401),
+                        ('/v1/media/../poetry_service.py', 'Bearer ' + 't' * 32, 404),
+                        ('/v1/media/originals/Swale.ogg', 'Bearer ' + 't' * 32, 404),
+                        ('/v1/media/swale-v1.wav', 'Bearer ' + 't' * 32, 200)]:
+                    client = http.client.HTTPConnection(*server.server_address)
+                    client.request('GET', endpoint, headers={'Authorization': auth})
+                    response = client.getresponse()
+                    self.assertEqual(response.status, expected)
+                    body = response.read()
+                    if expected == 200:
+                        self.assertEqual(hashlib.sha256(body).hexdigest(), '2f1f2c9472d68e2acd51809bfed4174f46aab419cbd36f85194237af40558766')
+                        with wave.open(io.BytesIO(body)) as recording:
+                            self.assertEqual(recording.getnframes(), 24 * 24000)
+                            self.assertGreater(len(set(recording.readframes(24000))), 100)
+                    client.close()
+            finally:
+                server.shutdown(); server.server_close(); worker.join()
+
     def test_corrupt_incomplete_unknown_and_dangling_catalogs_rejected(self):
         for raw in [package()[:-20], package().replace(b'"sha256": "', b'"sha256": "bad'),
                     package(change=lambda c: c['catalogs']['poets'].clear()),
