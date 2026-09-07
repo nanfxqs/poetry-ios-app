@@ -1,0 +1,237 @@
+[
+  {
+    "id": "li-bai-hanlin",
+    "poetID": "li-bai",
+    "title": "供奉翰林",
+    "period": "天宝初",
+    "chronology": 10,
+    "uncertainty": "史籍使用年号阶段，暂不换算为某个确切公历年。",
+    "sources": [
+      {
+        "title": "《旧唐书》卷190下",
+        "url": "https://zh.wikisource.org/w/index.php?title=舊唐書/卷190下&oldid=2636533",
+        "license": "古代史籍原文为公有领域；本条为项目据史籍独立概述。",
+        "note": "李白传记入朝、供奉翰林。"
+      },
+      {
+        "title": "《新唐书》卷202",
+        "url": "https://zh.wikisource.org/w/index.php?title=新唐書/卷202&oldid=2612253",
+        "license": "古代史籍原文为公有领域；本条为项目据史籍独立概述。",
+        "note": "李白传记天宝初入朝。"
+      }
+    ],
+    "poemLinks": []
+  },
+  {
+    "id": "li-bai-travels",
+    "poetID": "li-bai",
+    "title": "离开长安，漫游江湖",
+    "period": "离开长安后",
+    "chronology": 20,
+    "uncertainty": "这里只标明先后，不据此推定各地停留年份。",
+    "sources": [
+      {
+        "title": "《旧唐书》卷190下",
+        "url": "https://zh.wikisource.org/w/index.php?title=舊唐書/卷190下&oldid=2636533",
+        "license": "古代史籍原文为公有领域；本条为项目据史籍独立概述。",
+        "note": "李白传记离朝后浪迹江湖。"
+      },
+      {
+        "title": "《新唐书》卷202",
+        "url": "https://zh.wikisource.org/w/index.php?title=新唐書/卷202&oldid=2612253",
+        "license": "古代史籍原文为公有领域；本条为项目据史籍独立概述。",
+        "note": "李白传记获准归山后游历。"
+      }
+    ],
+    "poemLinks": []
+  },
+  {
+    "id": "li-bai-exile",
+    "poetID": "li-bai",
+    "title": "入永王幕，后获罪流放并遇赦",
+    "period": "安史之乱期间",
+    "chronology": 30,
+    "uncertainty": "两书记述细节有异；流放判决不能证明已抵达夜郎。",
+    "sources": [
+      {
+        "title": "《旧唐书》卷190下",
+        "url": "https://zh.wikisource.org/w/index.php?title=舊唐書/卷190下&oldid=2636533",
+        "license": "古代史籍原文为公有领域；本条为项目据史籍独立概述。",
+        "note": "李白传记入永王幕、长流夜郎及遇赦。"
+      },
+      {
+        "title": "《新唐书》卷202",
+        "url": "https://zh.wikisource.org/w/index.php?title=新唐書/卷202&oldid=2612253",
+        "license": "古代史籍原文为公有领域；本条为项目据史籍独立概述。",
+        "note": "李白传记永王事败后流夜郎、遇赦。"
+      }
+    ],
+    "poemLinks": []
+  },
+  {
+    "id": "du-fu-fengxiang",
+    "poetID": "du-fu",
+    "title": "赴凤翔，任拾遗",
+    "period": "至德二年（757）",
+    "chronology": 10,
+    "uncertainty": "网页转录官名为右拾遗，与常见左拾遗说法有异；暂保留不分左右的官名。",
+    "sources": [
+      {
+        "title": "《新唐书》卷201",
+        "url": "https://zh.wikisource.org/w/index.php?title=新唐書/卷201&oldid=2446706",
+        "license": "古代史籍原文为公有领域；本条为项目据史籍独立概述。",
+        "note": "杜审言传附杜甫记至德二年赴凤翔授拾遗。"
+      }
+    ],
+    "poemLinks": []
+  },
+  {
+    "id": "du-fu-qinzhou",
+    "poetID": "du-fu",
+    "title": "离华州，客秦州",
+    "period": "任拾遗之后",
+    "chronology": 20,
+    "uncertainty": "此处仅据传记先后，不补写未经核查的年份。",
+    "sources": [
+      {
+        "title": "《新唐书》卷201",
+        "url": "https://zh.wikisource.org/w/index.php?title=新唐書/卷201&oldid=2446706",
+        "license": "古代史籍原文为公有领域；本条为项目据史籍独立概述。",
+        "note": "附杜甫记出为华州司功参军，因饥荒客秦州。"
+      }
+    ],
+    "poemLinks": []
+  },
+  {
+    "id": "du-fu-chengdu",
+    "poetID": "du-fu",
+    "title": "结庐成都西郭",
+    "period": "客秦州之后",
+    "chronology": 30,
+    "uncertainty": null,
+    "sources": [
+      {
+        "title": "《新唐书》卷201",
+        "url": "https://zh.wikisource.org/w/index.php?title=新唐書/卷201&oldid=2446706",
+        "license": "古代史籍原文为公有领域；本条为项目据史籍独立概述。",
+        "note": "附杜甫记成都西郭营建住处。"
+      }
+    ],
+    "poemLinks": []
+  },
+  {
+    "id": "wang-wei-exam",
+    "poetID": "wang-wei",
+    "title": "进士及第",
+    "period": "开元九年（721）；另说开元初",
+    "chronology": 10,
+    "uncertainty": "两书时间精度不同，展示旧唐书具体纪年，同时保留新唐书的概述。",
+    "sources": [
+      {
+        "title": "《旧唐书》卷190下",
+        "url": "https://zh.wikisource.org/w/index.php?title=舊唐書/卷190下&oldid=2636533",
+        "license": "古代史籍原文为公有领域；本条为项目据史籍独立概述。",
+        "note": "王维传记开元九年进士擢第。"
+      },
+      {
+        "title": "《新唐书》卷202",
+        "url": "https://zh.wikisource.org/w/index.php?title=新唐書/卷202&oldid=2612253",
+        "license": "古代史籍原文为公有领域；本条为项目据史籍独立概述。",
+        "note": "王维传仅记开元初擢进士。"
+      }
+    ],
+    "poemLinks": []
+  },
+  {
+    "id": "wang-wei-wangchuan",
+    "poetID": "wang-wei",
+    "title": "辋川别业，与裴迪赋诗",
+    "period": "辋川生活",
+    "chronology": null,
+    "uncertainty": "尚未核定此阶段与全部仕宦经历的先后，不强行插入年序，也不据此给具体作品定年。",
+    "sources": [
+      {
+        "title": "《旧唐书》卷190下",
+        "url": "https://zh.wikisource.org/w/index.php?title=舊唐書/卷190下&oldid=2636533",
+        "license": "古代史籍原文为公有领域；本条为项目据史籍独立概述。",
+        "note": "王维传记辋川别业，与裴迪浮舟、赋诗。"
+      },
+      {
+        "title": "《新唐书》卷202",
+        "url": "https://zh.wikisource.org/w/index.php?title=新唐書/卷202&oldid=2612253",
+        "license": "古代史籍原文为公有领域；本条为项目据史籍独立概述。",
+        "note": "王维传记辋川别墅，与裴迪赋诗相酬。"
+      }
+    ],
+    "poemLinks": []
+  },
+  {
+    "id": "meng-haoran-lumen",
+    "poetID": "meng-haoran",
+    "title": "隐居鹿门山",
+    "period": "早年",
+    "chronology": 10,
+    "uncertainty": null,
+    "sources": [
+      {
+        "title": "《旧唐书》卷190下",
+        "url": "https://zh.wikisource.org/w/index.php?title=舊唐書/卷190下&oldid=2636533",
+        "license": "古代史籍原文为公有领域；本条为项目据史籍独立概述。",
+        "note": "孟浩然传记隐鹿门山。"
+      },
+      {
+        "title": "《新唐书》卷203",
+        "url": "https://zh.wikisource.org/w/index.php?title=新唐書/卷203&oldid=2194826",
+        "license": "古代史籍原文为公有领域；本条为项目据史籍独立概述。",
+        "note": "孟浩然传记隐鹿门山。"
+      }
+    ],
+    "poemLinks": []
+  },
+  {
+    "id": "meng-haoran-capital",
+    "poetID": "meng-haoran",
+    "title": "游京师",
+    "period": "四十岁时",
+    "chronology": 20,
+    "uncertainty": "未另行核定生年，不从年龄推算公历年。",
+    "sources": [
+      {
+        "title": "《旧唐书》卷190下",
+        "url": "https://zh.wikisource.org/w/index.php?title=舊唐書/卷190下&oldid=2636533",
+        "license": "古代史籍原文为公有领域；本条为项目据史籍独立概述。",
+        "note": "孟浩然传记年四十来游京师，应进士不第。"
+      },
+      {
+        "title": "《新唐书》卷203",
+        "url": "https://zh.wikisource.org/w/index.php?title=新唐書/卷203&oldid=2194826",
+        "license": "古代史籍原文为公有领域；本条为项目据史籍独立概述。",
+        "note": "孟浩然传记年四十游京师。"
+      }
+    ],
+    "poemLinks": []
+  },
+  {
+    "id": "meng-haoran-jingzhou",
+    "poetID": "meng-haoran",
+    "title": "入张九龄荆州幕府",
+    "period": "游京师之后",
+    "chronology": 30,
+    "uncertainty": null,
+    "sources": [
+      {
+        "title": "《旧唐书》卷190下",
+        "url": "https://zh.wikisource.org/w/index.php?title=舊唐書/卷190下&oldid=2636533",
+        "license": "古代史籍原文为公有领域；本条为项目据史籍独立概述。",
+        "note": "孟浩然传记张九龄镇荆州，辟为从事。"
+      },
+      {
+        "title": "《新唐书》卷203",
+        "url": "https://zh.wikisource.org/w/index.php?title=新唐書/卷203&oldid=2194826",
+        "license": "古代史籍原文为公有领域；本条为项目据史籍独立概述。",
+        "note": "孟浩然传记张九龄镇荆州，辟置于府。"
+      }
+    ],
+    "poemLinks": []
+  }
+]

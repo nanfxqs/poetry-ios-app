@@ -22,7 +22,8 @@ public struct ExplorationState: Codable, Equatable {
 }
 
 extension PoetryApplication {
-    public func explore(_ state: ExplorationState, tags: [String: PoetryTags] = PoetryTags.bundled) throws -> [Poem] {
+    public func explore(_ state: ExplorationState, tags: [String: PoetryTags]? = nil) throws -> [Poem] {
+        let tags = try tags ?? contentTags()
         let keyword = state.keyword.trimmingCharacters(in: .whitespacesAndNewlines)
         return try allPoems().filter { poem in
             let textMatches = keyword.isEmpty || ([poem.title, poem.poet] + poem.lines).contains { $0.localizedStandardContains(keyword) }
@@ -32,7 +33,8 @@ extension PoetryApplication {
             }
         }
     }
-    public func explorationOptions(tags: [String: PoetryTags] = PoetryTags.bundled) throws -> [ExplorationGroup: [String]] {
+    public func explorationOptions(tags: [String: PoetryTags]? = nil) throws -> [ExplorationGroup: [String]] {
+        let tags = try tags ?? contentTags()
         let poems = try allPoems()
         return Dictionary(uniqueKeysWithValues: ExplorationGroup.allCases.map { group in
             (group, Set(poems.flatMap { explorationValues(group, poem: $0, tags: tags) }).sorted())

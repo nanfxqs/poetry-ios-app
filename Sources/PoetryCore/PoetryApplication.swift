@@ -44,6 +44,7 @@ public final class PoetryApplication {
         }
         try installPoetsIfNeeded()
         try installRelationshipsIfNeeded()
+        try installLifeEventsIfNeeded()
     }
     public static func bundledPoems() throws -> [Poem] {
         guard let url = Bundle.module.url(forResource: "seed", withExtension: "json") else { throw DatabaseError(message: "随包作品缺失") }
