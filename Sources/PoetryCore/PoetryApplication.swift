@@ -42,6 +42,7 @@ public final class PoetryApplication {
                 try database.execute("INSERT INTO app_metadata VALUES ('seed_installed', '1')")
             }
         }
+        try installPoetsIfNeeded()
     }
     public static func bundledPoems() throws -> [Poem] {
         guard let url = Bundle.module.url(forResource: "seed", withExtension: "json") else { throw DatabaseError(message: "随包作品缺失") }

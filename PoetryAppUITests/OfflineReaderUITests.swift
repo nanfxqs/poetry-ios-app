@@ -57,4 +57,21 @@ final class OfflineReaderUITests: XCTestCase {
         XCTAssertTrue(app.tabBars.buttons["探索"].isHittable)
         XCTAssertTrue(app.tabBars.buttons["诗集"].isHittable)
     }
+    func testAuthorWorksAndReturnPreserveReader() throws {
+        app.launch()
+        let author = app.buttons["reader-author"]
+        XCTAssertTrue(author.waitForExistence(timeout: 15))
+        author.tap()
+        let works = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "poet-work-")).firstMatch
+        reveal(works)
+        let title = works.label
+        works.tap()
+        XCTAssertTrue(app.staticTexts[title].waitForExistence(timeout: 5))
+        app.navigationBars.buttons.firstMatch.tap()
+        XCTAssertTrue(works.waitForExistence(timeout: 5))
+        XCTAssertTrue(works.isHittable)
+        app.navigationBars.buttons.firstMatch.tap()
+        XCTAssertTrue(author.waitForExistence(timeout: 5))
+    }
+
 }
