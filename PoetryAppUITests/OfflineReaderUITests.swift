@@ -74,4 +74,22 @@ final class OfflineReaderUITests: XCTestCase {
         XCTAssertTrue(author.waitForExistence(timeout: 5))
     }
 
+    func testLifeTimelineEvidenceAndReturnToPoet() throws {
+        app.launch()
+        let author = app.buttons["reader-author"]
+        XCTAssertTrue(author.waitForExistence(timeout: 15))
+        author.tap()
+        let life = app.buttons["poet-life"]
+        reveal(life)
+        life.tap()
+        let source = app.buttons["事件依据与时间说明"].firstMatch
+        reveal(source)
+        source.tap()
+        reveal(app.staticTexts["《旧唐书》卷190下"])
+        reveal(app.staticTexts["暂未建立有依据的作品关联。"].firstMatch)
+        app.navigationBars.buttons.firstMatch.tap()
+        XCTAssertTrue(life.waitForExistence(timeout: 5))
+        XCTAssertTrue(life.isHittable)
+    }
+
 }
