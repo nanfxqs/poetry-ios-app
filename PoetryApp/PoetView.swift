@@ -52,3 +52,31 @@ struct PoetView: View {
             }
     }
 }
+
+struct PoetDirectoryView: View {
+    let application: PoetryApplication
+    @State private var poets: [Poet] = []
+    @State private var failure: String?
+
+    var body: some View {
+        List {
+            if let failure {
+                Text(failure).foregroundStyle(.secondary)
+            } else if poets.isEmpty {
+                Text("暂未收录诗人资料。").foregroundStyle(.secondary)
+            }
+            ForEach(poets) { poet in
+                NavigationLink {
+                    PoetView(application: application, poetID: poet.id)
+                } label: {
+                    Text("\(poet.dynasty) · \(poet.name)").frame(minHeight: 44)
+                }
+            }.listRowBackground(PoetryStyle.paper)
+        }.scrollContentBackground(.hidden).background(PoetryStyle.paper)
+            .navigationTitle("诗人")
+            .task {
+                do { poets = try application.allPoets() }
+                catch { failure = "暂时无法读取诗人资料：\(error.localizedDescription)" }
+            }
+    }
+}

@@ -41,7 +41,12 @@ struct RootView: View {
     var body: some View {
         TabView(selection: $selectedTab) {
             NavigationStack { TodayView(application: application) }.tabItem { Label("今日", systemImage: "sun.max") }.tag(0)
-            NavigationStack { ExploreView(application: application) }.tabItem { Label("探索", systemImage: "map") }.tag(1)
+            NavigationStack {
+                ExploreView(application: application).toolbar {
+                    NavigationLink("诗人") { PoetDirectoryView(application: application) }
+                        .accessibilityIdentifier("explore-poets")
+                }
+            }.tabItem { Label("探索", systemImage: "map") }.tag(1)
             CollectionView(store: collection, goToday: { selectedTab = 0 })
                 .tabItem { Label("诗集", systemImage: "books.vertical") }.tag(2)
         }.environmentObject(collection)
@@ -76,7 +81,7 @@ struct ReadingDestination: View {
     let poem: Poem
     @State private var related: [RelatedPoem] = []
     var body: some View {
-        PoemReaderView(poem: poem) {
+        PoemReaderView(application: application, poem: poem) {
             if !related.isEmpty {
                 VStack(alignment: .leading, spacing: 18) {
                     Text("相关作品").font(.headline)
@@ -98,6 +103,7 @@ struct ReadingDestination: View {
 }
 
 struct PoemReaderView<Footer: View>: View {
+    let application: PoetryApplication
     let poem: Poem
     @ViewBuilder let footer: () -> Footer
     var body: some View {
@@ -111,7 +117,12 @@ struct PoemReaderView<Footer: View>: View {
                         Spacer()
                         FavoriteButton(poem: poem).labelStyle(.iconOnly)
                     }
-                    Text("\(poem.dynasty) · \(poem.poet)").foregroundStyle(.secondary)
+                    NavigationLink {
+                        PoetView(application: application, poetID: poem.poetID)
+                    } label: {
+                        Text("\(poem.dynasty) · \(poem.poet)").foregroundStyle(.secondary)
+                            .frame(minHeight: 44)
+                    }.accessibilityIdentifier("reader-author")
                 }
                 VStack(alignment: .leading, spacing: 18) {
                     ForEach(Array(poem.lines.enumerated()), id: \.offset) { _, line in
