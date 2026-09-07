@@ -96,4 +96,25 @@ final class OfflineReaderUITests: XCTestCase {
         app.buttons["places.clear"].tap()
     }
 
+    func testRelationshipEvidenceNavigationAndLargeTextList() throws {
+        app.launchArguments += ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
+        app.launch()
+        let author = app.buttons["reader-author"]
+        XCTAssertTrue(author.waitForExistence(timeout: 15))
+        author.tap()
+        let relations = app.buttons["人物关系"]
+        reveal(relations)
+        relations.tap()
+        let edge = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "relation-edge-")).firstMatch
+        reveal(edge)
+        edge.tap()
+        let evidence = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "relation-evidence-")).firstMatch
+        reveal(evidence)
+        evidence.tap()
+        XCTAssertTrue(app.buttons["reader-author"].waitForExistence(timeout: 5))
+        app.navigationBars.buttons.firstMatch.tap()
+        XCTAssertTrue(evidence.waitForExistence(timeout: 5))
+        XCTAssertTrue(evidence.isHittable, "返回后保留所选关系与证据位置")
+    }
+
 }
