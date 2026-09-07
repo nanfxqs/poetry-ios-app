@@ -35,7 +35,7 @@ def validate(raw):
     if hashlib.sha256(payload).hexdigest() != envelope['sha256']:
         raise ValueError('checksum mismatch')
     content = json.loads(payload)
-    if set(content) != {'poems', 'catalogs'} or set(content['catalogs']) != {'poets', 'places', 'placeAssociations', 'tags', 'lifeEvents'}:
+    if set(content) != {'poems', 'catalogs'} or set(content['catalogs']) != {'poets', 'places', 'placeAssociations', 'tags', 'lifeEvents', 'relationships'}:
         raise ValueError('unsupported catalogs')
     ids = set()
     if not content['poems']:
@@ -96,6 +96,20 @@ def validate(raw):
         for link in event['poemLinks']:
             if link['poemID'] not in ids or link['kind'] not in ('associated', 'contemporary') or not link['sources'] or not all(evidence(e) for e in link['sources']):
                 raise ValueError('invalid life poem reference')
+    identity(catalogs['relationships'])
+    poem_authors = {p['id']: p['poetID'] for p in content['poems']}
+    for relation in catalogs['relationships']:
+        links = relation['evidencePoemIDs']
+        if (relation['fromPoetID'] not in poets or relation['toPoetID'] not in poets
+                or relation['fromPoetID'] == relation['toPoetID']
+                or not isinstance(relation['kind'], str) or not relation['kind']
+                or not isinstance(relation['summary'], str) or not relation['summary']
+                or not isinstance(links, list) or not links or not all(isinstance(v, str) for v in links)
+                or len(set(links)) != len(links)
+                or not all(poem_authors.get(v) == relation['fromPoetID'] for v in links)
+                or not isinstance(relation['sources'], list) or not relation['sources']
+                or not all(evidence(e) for e in relation['sources'])):
+            raise ValueError('invalid relationship evidence')
     return envelope
 
 

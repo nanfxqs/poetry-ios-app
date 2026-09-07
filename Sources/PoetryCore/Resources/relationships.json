@@ -1,0 +1,63 @@
+[
+  {
+    "id": "du-fu-li-bai",
+    "fromPoetID": "du-fu",
+    "toPoetID": "li-bai",
+    "kind": "怀人诗",
+    "summary": "杜甫以诗表达对李白的思念与诗才赞赏；不能据此确定当日位置或具体会面。",
+    "evidencePoemIDs": [
+      "chunri-yi-li-bai"
+    ],
+    "sources": [
+      {
+        "title": "《全唐诗》古诗原文 · 维基文库核对入口",
+        "url": "https://zh.wikisource.org/wiki/春日憶李白",
+        "license": "古代作品原文属于公有领域；本包不收录现代译注或页面编辑说明。",
+        "note": "依项目 2026-09-05 种子核查记录，展示为简体转写。保留所选文字，不自动替换异文；未核定写作年份与坐标。"
+      }
+    ]
+  },
+  {
+    "id": "li-bai-meng-haoran",
+    "fromPoetID": "li-bai",
+    "toPoetID": "meng-haoran",
+    "kind": "赠诗／送别诗",
+    "summary": "题名明确写给孟浩然，表达敬慕与送别。赠诗不自动证明当面赠送，未核定具体会面或年份。",
+    "evidencePoemIDs": [
+      "zeng-meng-haoran",
+      "huanghelou-song-meng-haoran"
+    ],
+    "sources": [
+      {
+        "title": "《全唐诗》古诗原文 · 维基文库核对入口",
+        "url": "https://zh.wikisource.org/wiki/贈孟浩然",
+        "license": "古代作品原文属于公有领域；本包不收录现代译注或页面编辑说明。",
+        "note": "依项目 2026-09-05 种子核查记录，展示为简体转写。保留所选文字，不自动替换异文；未核定写作年份与坐标。"
+      },
+      {
+        "title": "《全唐诗》古诗原文 · 维基文库核对入口",
+        "url": "https://zh.wikisource.org/wiki/黃鶴樓送孟浩然之廣陵",
+        "license": "古代作品原文属于公有领域；本包不收录现代译注或页面编辑说明。",
+        "note": "依项目 2026-09-05 种子核查记录，展示为简体转写。保留所选文字，不自动替换异文；未核定写作年份与坐标。"
+      }
+    ]
+  },
+  {
+    "id": "meng-haoran-wang-wei",
+    "fromPoetID": "meng-haoran",
+    "toPoetID": "wang-wei",
+    "kind": "留别诗",
+    "summary": "题名点明王维，正文写知音与惜别；未据此核定送别时间或地点。",
+    "evidencePoemIDs": [
+      "liubie-wang-wei"
+    ],
+    "sources": [
+      {
+        "title": "《全唐诗》古诗原文 · 维基文库核对入口",
+        "url": "https://zh.wikisource.org/wiki/全唐詩/卷160#留別王侍御維",
+        "license": "古代作品原文属于公有领域；本包不收录现代译注或页面编辑说明。",
+        "note": "依项目 2026-09-05 种子核查记录，展示为简体转写。保留所选文字，不自动替换异文；未核定写作年份与坐标。"
+      }
+    ]
+  }
+]

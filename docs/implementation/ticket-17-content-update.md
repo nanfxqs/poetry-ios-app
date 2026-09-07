@@ -6,7 +6,7 @@
 
 `GET /v1/content` 必须带 `Authorization: Bearer <private token>`。返回 envelope：`schemaVersion: 1, version: positive Int, sha256: lowercase hex, payload: String`。校验覆盖 payload 原始 UTF-8 字节，不重新序列化。最大 envelope 8 MB，版本严格递增，当前版本返回正常包并由客户端报告已是最新。服务无数据库文件下载或远程发布接口。
 
-payload 为完整 JSON：`poems: [Poem]`, `catalogs: {poets: [Poet], places: [PoetryPlace], placeAssociations: [PlaceAssociation], lifeEvents: [LifeEvent], tags: {poemID: PoetryTags}}`。所有键必需，未知目录拒绝。诗人、作品、地点与事件 ID 唯一且符合小写稳定标识；作品作者、地点关联、标签、事件作者和事件关联作品均须存在。作品数组顺序即人工推荐顺序。来源保留标题、URL、许可与说明；自动校验不证明史实正确。
+payload 为完整 JSON：`poems: [Poem]`, `catalogs: {poets: [Poet], places: [PoetryPlace], placeAssociations: [PlaceAssociation], lifeEvents: [LifeEvent], relationships: [Relationship], tags: {poemID: PoetryTags}}`。所有键必需，未知目录拒绝。诗人、作品、地点与事件 ID 唯一且符合小写稳定标识；作品作者、地点关联、标签、事件作者和事件关联作品均须存在；人物关系两端须为不同的已收录诗人，每首证据作品须存在且作者为关系的发出方。作品数组顺序即人工推荐顺序。来源保留标题、URL、许可与说明；自动校验不证明史实正确。
 
 目录整体替换：`poets`, `places`, `place_associations`, `life_events` 与 `poems` 在同一事务内；相关种子安装标记同步写入，避免重启恢复旧种子。标签持久化于 `content_tags`，阅读及探索默认使用当前标签；显式测试标签仍可传入。新增目录必须同时扩展服务与客户端验证、事务安装和测试，不能默默忽略。
 

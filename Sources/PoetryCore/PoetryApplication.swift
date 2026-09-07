@@ -43,6 +43,7 @@ public final class PoetryApplication {
             }
         }
         try installPoetsIfNeeded()
+        try installRelationshipsIfNeeded()
         try installLifeEventsIfNeeded()
     }
     public static func bundledPoems() throws -> [Poem] {

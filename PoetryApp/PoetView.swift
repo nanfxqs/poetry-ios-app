@@ -28,6 +28,7 @@ struct PoetView: View {
                         Text("诗人资料暂未收录").font(.headline)
                         Text("仍可阅读下方已收录的作品。").foregroundStyle(.secondary)
                     }
+                    NavigationLink("人物关系") { RelationsView(application: application, poetID: poetID) }.frame(minHeight: 44)
                     NavigationLink {
                         LifeTimelineView(application: application, poetID: poetID)
                     } label: { Text("生平路线").frame(minHeight: 44) }

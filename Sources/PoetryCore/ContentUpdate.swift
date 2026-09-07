@@ -39,7 +39,7 @@ extension PoetryApplication {
               let root = try JSONSerialization.jsonObject(with: payload) as? [String: Any],
               Set(root.keys) == Set(["poems", "catalogs"]),
               let poemObjects = root["poems"], let catalogs = root["catalogs"] as? [String: Any],
-              Set(catalogs.keys) == Set(["poets", "places", "placeAssociations", "tags", "lifeEvents"]) else { throw ContentUpdateError.invalid }
+              Set(catalogs.keys) == Set(["poets", "places", "placeAssociations", "tags", "lifeEvents", "relationships"]) else { throw ContentUpdateError.invalid }
         let poems = try JSONDecoder().decode([Poem].self, from: JSONSerialization.data(withJSONObject: poemObjects))
         guard !poems.isEmpty, Set(poems.map(\.id)).count == poems.count else { throw ContentUpdateError.invalid }
         for poem in poems {
@@ -47,7 +47,7 @@ extension PoetryApplication {
                   !poem.poet.isEmpty, !poem.lines.isEmpty, poem.lines.allSatisfy({ !$0.isEmpty }),
                   !poem.sources.isEmpty, poem.sources.allSatisfy({ !$0.title.isEmpty && !$0.license.isEmpty && URL(string: $0.url)?.scheme == "https" }) else { throw ContentUpdateError.invalid }
         }
-        let catalogData = try ContentCatalogs(catalogs, poemIDs: Set(poems.map(\.id)), authorIDs: Set(poems.map(\.poetID)))
+        let catalogData = try ContentCatalogs(catalogs, poemIDs: Set(poems.map(\.id)), authorIDs: Set(poems.map(\.poetID)), poemAuthors: Dictionary(uniqueKeysWithValues: poems.map { ($0.id, $0.poetID) }))
         try database.transaction {
             guard package.version > (try contentVersion()) else { throw ContentUpdateError.outdated }
             try catalogData.install(database)
@@ -98,9 +98,10 @@ private struct ContentCatalogs {
     let associations: [[String: Any]]
     let tags: [String: Any]
     let lifeEvents: [[String: Any]]
-    init(_ raw: [String: Any], poemIDs: Set<String>, authorIDs: Set<String>) throws {
+    let relationships: [[String: Any]]
+    init(_ raw: [String: Any], poemIDs: Set<String>, authorIDs: Set<String>, poemAuthors: [String: String]) throws {
         guard let poets = raw["poets"] as? [[String: Any]], let places = raw["places"] as? [[String: Any]],
-              let associations = raw["placeAssociations"] as? [[String: Any]], let tags = raw["tags"] as? [String: Any], let lifeEvents = raw["lifeEvents"] as? [[String: Any]] else { throw ContentUpdateError.invalid }
+              let associations = raw["placeAssociations"] as? [[String: Any]], let tags = raw["tags"] as? [String: Any], let lifeEvents = raw["lifeEvents"] as? [[String: Any]], let relationships = raw["relationships"] as? [[String: Any]] else { throw ContentUpdateError.invalid }
         func ids(_ rows: [[String: Any]]) throws -> Set<String> {
             let values = rows.compactMap { $0["id"] as? String }
             guard values.count == rows.count, Set(values).count == rows.count,
@@ -145,6 +146,18 @@ private struct ContentCatalogs {
                       ["associated", "contemporary"].contains(kind), let proof = link["sources"] as? [Any], !proof.isEmpty, proof.allSatisfy({ evidence($0) }) else { throw ContentUpdateError.invalid }
             }
         }
+        _ = try ids(relationships)
+        for relation in relationships {
+            guard let from = relation["fromPoetID"] as? String, poetIDs.contains(from),
+                  let to = relation["toPoetID"] as? String, poetIDs.contains(to), from != to,
+                  (relation["kind"] as? String)?.isEmpty == false,
+                  (relation["summary"] as? String)?.isEmpty == false,
+                  let links = relation["evidencePoemIDs"] as? [String], !links.isEmpty,
+                  Set(links).count == links.count, links.allSatisfy({ poemAuthors[$0] == from }),
+                  let sources = relation["sources"] as? [Any], !sources.isEmpty,
+                  sources.allSatisfy({ evidence($0) }) else { throw ContentUpdateError.invalid }
+        }
+        self.relationships = relationships
         self.lifeEvents = lifeEvents
         self.poets = poets; self.places = places; self.associations = associations; self.tags = tags
     }
@@ -154,12 +167,14 @@ private struct ContentCatalogs {
         try db.execute("CREATE TABLE IF NOT EXISTS places (id TEXT PRIMARY KEY, payload TEXT NOT NULL)")
         try db.execute("CREATE TABLE IF NOT EXISTS place_associations (place_id TEXT NOT NULL, poem_id TEXT NOT NULL, kind TEXT NOT NULL, payload TEXT NOT NULL, PRIMARY KEY(place_id, poem_id, kind))")
         try db.execute("CREATE TABLE IF NOT EXISTS life_events (id TEXT PRIMARY KEY, payload TEXT NOT NULL, position INTEGER NOT NULL)")
-        for table in ["poets", "places", "place_associations", "life_events"] { try db.execute("DELETE FROM " + table) }
+        try db.execute("CREATE TABLE IF NOT EXISTS relationships (id TEXT PRIMARY KEY, payload TEXT NOT NULL, position INTEGER NOT NULL)")
+        for table in ["poets", "places", "place_associations", "life_events", "relationships"] { try db.execute("DELETE FROM " + table) }
         for (i, row) in poets.enumerated() { try db.execute("INSERT INTO poets VALUES (?, ?, ?)", [.text(row["id"] as! String), .text(try json(row)), .integer(Int64(i))]) }
         for row in places { try db.execute("INSERT INTO places VALUES (?, ?)", [.text(row["id"] as! String), .text(try json(row))]) }
         for row in associations { try db.execute("INSERT INTO place_associations VALUES (?, ?, ?, ?)", [.text(row["placeID"] as! String), .text(row["poemID"] as! String), .text(row["kind"] as! String), .text(try json(row))]) }
         for (i, row) in lifeEvents.enumerated() { try db.execute("INSERT INTO life_events VALUES (?, ?, ?)", [.text(row["id"] as! String), .text(try json(row)), .integer(Int64(i))]) }
-        for key in ["poets_installed", "places_seed_1", "life_events_installed"] { try db.execute("INSERT INTO app_metadata VALUES (?, '1') ON CONFLICT(key) DO UPDATE SET value = excluded.value", [.text(key)]) }
+        for (i, row) in relationships.enumerated() { try db.execute("INSERT INTO relationships VALUES (?, ?, ?)", [.text(row["id"] as! String), .text(try json(row)), .integer(Int64(i))]) }
+        for key in ["poets_installed", "places_seed_1", "life_events_installed", "relationships_installed"] { try db.execute("INSERT INTO app_metadata VALUES (?, '1') ON CONFLICT(key) DO UPDATE SET value = excluded.value", [.text(key)]) }
         try db.execute("INSERT INTO app_metadata VALUES ('content_tags', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value", [.text(try json(tags))])
     }
 }
