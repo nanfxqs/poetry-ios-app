@@ -62,7 +62,8 @@ extension PoetryApplication {
         }
     }
 
-    public func relatedPoems(to poem: Poem, tags: [String: PoetryTags] = PoetryTags.bundled) throws -> [RelatedPoem] {
+    public func relatedPoems(to poem: Poem, tags: [String: PoetryTags]? = nil) throws -> [RelatedPoem] {
+        let tags = try tags ?? contentTags()
         guard let origin = tags[poem.id] else { return [] }
         return try allPoems().filter { $0.id != poem.id }.compactMap { candidate -> RelatedPoem? in
             guard let labels = tags[candidate.id] else { return nil }
