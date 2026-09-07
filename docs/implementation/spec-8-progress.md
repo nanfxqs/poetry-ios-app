@@ -40,3 +40,7 @@
 - 同一工程在 Aqua 任务中签名仍报 `No Accounts`，因此不能仅凭钥匙串上下文差异确认根因。
 - `DVTDeveloperAccountManagerAppleIDLists` 的 `IDE.Identifiers.Prod` 列表数量为 0；Team 缓存仍存在。已请用户保存并正常退出、重开 Xcode，核对持久登录状态。未删除账号、修改钥匙串 ACL 或读取凭据。
 - 两个一次性 launchd 诊断任务已卸载，临时脚本和日志保留在 Mac `/tmp/poetry-signing-*` 供排查；没有创建开机任务。
+
+## #10／#11／#12 整合验证
+
+`cccdbcb` 接通每日推荐、相关阅读、共享收藏状态和探索搜索筛选。Mac `swift test` 共 10 项通过（离线阅读 2、推荐 3、收藏 3、搜索 2），未签名 `xcodebuild ... build-for-testing` 通过。设备 UI 操作、推荐跨日真机观察及签名安装仍待验收。后续工单基于已整合并可编译的应用接口推进代码，前置工单的设备验收不因此视为完成。
