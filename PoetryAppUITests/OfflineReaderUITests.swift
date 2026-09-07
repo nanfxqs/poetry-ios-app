@@ -74,4 +74,26 @@ final class OfflineReaderUITests: XCTestCase {
         XCTAssertTrue(author.waitForExistence(timeout: 5))
     }
 
+    func testOfflinePlaceListSelectionAndReaderReturn() throws {
+        app.launch()
+        app.tabBars.buttons["探索"].tap()
+        let clear = app.buttons["清空条件"]
+        if clear.exists && clear.isHittable { clear.tap() }
+        let place = app.buttons["places.yangzhou"]
+        reveal(place)
+        place.tap()
+        let poem = app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "黄鹤楼送孟浩然之广陵")).firstMatch
+        reveal(poem)
+        poem.tap()
+        XCTAssertTrue(app.staticTexts["故人西辞黄鹤楼，"].waitForExistence(timeout: 5))
+        app.navigationBars.buttons.firstMatch.tap()
+        XCTAssertTrue(poem.isHittable)
+        for _ in 0..<10 {
+            if app.buttons["places.clear"].isHittable { break }
+            app.swipeDown()
+        }
+        XCTAssertTrue(app.buttons["places.clear"].exists, "阅读返回保留地点筛选")
+        app.buttons["places.clear"].tap()
+    }
+
 }
