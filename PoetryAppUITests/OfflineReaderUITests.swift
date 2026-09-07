@@ -94,7 +94,7 @@ final class OfflineReaderUITests: XCTestCase {
         }
         XCTAssertTrue(app.buttons["places.clear"].exists, "阅读返回保留地点筛选")
         app.buttons["places.clear"].tap()
-}
+    }
 
     func testLifeTimelineEvidenceAndReturnToPoet() throws {
         app.launch()

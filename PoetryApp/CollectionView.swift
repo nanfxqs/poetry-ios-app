@@ -41,6 +41,11 @@ struct CollectionView: View {
             }
             .background(PoetryStyle.paper)
             .navigationTitle("诗集")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    NavigationLink("更新与备份") { ServiceSettingsView(application: store.application) }
+                }
+            }
             .searchable(text: $search, prompt: "在收藏中搜索标题、诗句或诗人")
             .navigationDestination(for: Poem.self) { poem in ReadingDestination(application: store.application, poem: poem) }
             .alert("诗集暂时无法更新", isPresented: Binding(get: { store.failure != nil }, set: { if !$0 { store.failure = nil } })) {
