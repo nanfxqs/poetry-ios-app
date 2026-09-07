@@ -2,7 +2,7 @@
 
 ## 数据边界
 
-`poetry-private` Compose 的 `poetry_data` 保存内容包及不可变收藏修订；独立 `poetry_snapshots` 卷保存 SQLite Online Backup API 生成的一致快照。快照切成 DELETE journal 的自包含文件，经 `integrity_check` 后原子发布，成功后才轮换最近七份。任何源读取、磁盘写入或验证失败均不启动轮换；错误五分钟后重试。每日侧车根据最新快照时间每天一次，重启不额外消耗每日保留份数。手动 snapshot 也参与七份轮换。
+`poetry-private` Compose 的 `poetry_data` 保存内容包及不可变收藏修订；独立 `poetry_snapshots` 卷保存 SQLite Online Backup API 生成的一致快照。快照切成 DELETE journal 的自包含文件，经 `integrity_check` 后原子发布，成功后才轮换最近七个有成功快照的 UTC 自然日，每日仅保留最新成功快照。任何源读取、磁盘写入或验证失败均不启动轮换；错误五分钟后重试。每日侧车按 UTC 自然日每天一次，重启不额外消耗每日保留份数。同日手动 snapshot 成功后替换当日旧快照，不挤占前六日快照；当地时区不影响分日。
 
 这两个 Docker 卷可能在 Mac 同一块物理磁盘，不能抵御整机或磁盘损坏。手动导出 Linux 才增加另一台机器的副本，仍建议把验证过的文件另存离线介质。原始数据库及 WAL 禁止直接复制。工具无需访问 Immich，不修改其 Compose、数据库或 Tailscale Serve 映射。
 
@@ -39,6 +39,6 @@ POETRY_TOKEN_FILE=/路径/私有测试令牌 python3 service/poetry_service.py -
 
 ## 实际验证与限制
 
-`python3 -m unittest discover -s service` 通过：在线 WAL 存在未提交写入时备份仍得到已提交内容与收藏；连续快照仅留七份；写入失败／缺源保留此前全部 SHA-256；坏库与错误 SHA-256 拒绝；目标已存在拒绝覆盖；从导出恢复的新数据库启动真实 HTTP 服务并两次重启后内容和收藏一致；空测试客户端主动请求备份后才恢复收藏。所有测试使用临时目录。
+`python3 -m unittest discover -s service` 通过：在线 WAL 存在未提交写入时备份仍得到已提交内容与收藏；跨九日快照保留最近七日、同日重复手动快照保留前六日；写入失败／缺源保留此前全部 SHA-256；坏库与错误 SHA-256 拒绝；目标已存在拒绝覆盖；从导出恢复的新数据库启动真实 HTTP 服务并两次重启后内容和收藏一致；空测试客户端主动请求备份后才恢复收藏。所有测试使用临时目录。
 
 这里的 HTTP 测试客户端不是 iPhone，亦不是 Docker 容器重启验收。真机主动恢复、Mac 实际定时运行及容器重启由主实施流程另行记录，不以测试替代。

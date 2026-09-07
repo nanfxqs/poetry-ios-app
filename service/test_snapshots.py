@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 import http.client
 import json
 from pathlib import Path
@@ -17,8 +18,20 @@ class SnapshotTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder); db = root/'live.sqlite'; copies = root/'copies'
             publish(db, package())
-            for _ in range(9):
-                snapshot(db, copies)
+            for day in range(1, 10):
+                with patch('snapshots.datetime') as clock:
+                    clock.now.return_value = datetime(2026, 9, day, tzinfo=timezone.utc)
+                    snapshot(db, copies)
+            historical = {p.name: digest(p) for p in copies.iterdir() if '20260909' not in p.name}
+            self.assertEqual(len(historical), 6)
+            # Repeated manual backups update today's slot, never evict earlier days.
+            for hour in range(1, 10):
+                with patch('snapshots.datetime') as clock:
+                    clock.now.return_value = datetime(2026, 9, 9, hour, tzinfo=timezone.utc)
+                    snapshot(db, copies)
+            self.assertEqual(historical, {p.name: digest(p) for p in copies.iterdir() if '20260909' not in p.name})
+            self.assertEqual(sorted(p.name[7:15] for p in copies.iterdir()),
+                             [f'202609{day:02}' for day in range(3, 10)])
             before = {p.name: digest(p) for p in copies.iterdir()}
             self.assertEqual(len(before), 7)
             with patch('snapshots.copy_database', side_effect=OSError('disk full')):
