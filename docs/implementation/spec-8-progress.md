@@ -28,6 +28,15 @@
 ## #9 首轮构建结果
 
 - `swift test` 在 Mac 通过两项应用层测试：六首随包作品首次写入与重启读取、长标题长正文返回完整。
-- 自动签名构建失败：Xcode 报告 `No Accounts`，且缺少 `com.nanfl.PoetryApp` 的描述文件。需要维护者在 Xcode Accounts 登录；未改用其他 App 的标识或描述文件。
-- 独立未签名 iOS 构建发现 SQLite pkg-config 引入 Homebrew 的 macOS 动态库；正在移除主机库搜索路径，使用 iOS SDK 的系统 SQLite。
+- 自动签名构建失败：Xcode 报告 `No Accounts`，且缺少 `com.nanfl.PoetryApp` 的描述文件。用户确认 Xcode 界面已登录；后续发现命令行读取的持久账号列表为空，正在诊断状态不一致。未改用其他 App 的标识或描述文件。
+- 独立未签名 iOS 构建发现 SQLite pkg-config 引入 Homebrew 的 macOS 动态库；已在 `438c1b1` 移除主机库搜索路径，使用 iOS SDK 的系统 SQLite；未签名 `build-for-testing` 已通过。
 - 当前尚未生成可安装 IPA。
+
+## 签名诊断（进行中）
+
+- 相同签名命令在 SSH 可重复得到 `No Accounts`；关闭签名后应用和 XCUITest runner 编译通过。
+- SSH 与桌面均为 `nanfm`（UID 501），使用同一套 Xcode，工程 Team 与缓存 Personal Team 一致。
+- SSH `Background` 上下文访问 login 钥匙串设置报 `User interaction is not allowed`；临时桌面 `Aqua` 任务可读取相同设置。
+- 同一工程在 Aqua 任务中签名仍报 `No Accounts`，因此不能仅凭钥匙串上下文差异确认根因。
+- `DVTDeveloperAccountManagerAppleIDLists` 的 `IDE.Identifiers.Prod` 列表数量为 0；Team 缓存仍存在。已请用户保存并正常退出、重开 Xcode，核对持久登录状态。未删除账号、修改钥匙串 ACL 或读取凭据。
+- 两个一次性 launchd 诊断任务已卸载，临时脚本和日志保留在 Mac `/tmp/poetry-signing-*` 供排查；没有创建开机任务。
