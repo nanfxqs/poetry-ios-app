@@ -24,3 +24,10 @@
 ## 验收证据规则
 
 自动化记录命令与结果；设备验收分别记录安装、启动和具体操作。不能从 DVT 可连接推断 App 已启动，也不能以桌面或模拟器结果替代实体 iPhone 验收。人工操作尚未执行时保持待验收。
+
+## #9 首轮构建结果
+
+- `swift test` 在 Mac 通过两项应用层测试：六首随包作品首次写入与重启读取、长标题长正文返回完整。
+- 自动签名构建失败：Xcode 报告 `No Accounts`，且缺少 `com.nanfl.PoetryApp` 的描述文件。需要维护者在 Xcode Accounts 登录；未改用其他 App 的标识或描述文件。
+- 独立未签名 iOS 构建发现 SQLite pkg-config 引入 Homebrew 的 macOS 动态库；正在移除主机库搜索路径，使用 iOS SDK 的系统 SQLite。
+- 当前尚未生成可安装 IPA。
