@@ -48,7 +48,7 @@ struct ExploreView: View {
                 }
                 ForEach(poems) { poem in
                     NavigationLink {
-                        PoemReaderView(poem: poem) { EmptyView() }
+                        ReadingDestination(application: application, poem: poem)
                     } label: {
                         VStack(alignment: .leading, spacing: 8) {
                             Text(poem.title).font(.system(.title3, design: .serif))

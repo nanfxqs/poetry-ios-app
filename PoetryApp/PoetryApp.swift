@@ -30,12 +30,21 @@ enum PoetryStyle {
 
 struct RootView: View {
     let application: PoetryApplication
+    @StateObject private var collection: CollectionStore
+    @State private var selectedTab = 0
+
+    init(application: PoetryApplication) {
+        self.application = application
+        _collection = StateObject(wrappedValue: CollectionStore(application: application))
+    }
+
     var body: some View {
-        TabView {
-            NavigationStack { TodayView(application: application) }.tabItem { Label("今日", systemImage: "sun.max") }
-            NavigationStack { ContentUnavailableView("探索", systemImage: "map", description: Text("地点与诗人资料尚未接入。你可以先在今日阅读随包作品。")) }.tabItem { Label("探索", systemImage: "map") }
-            NavigationStack { ContentUnavailableView("诗集", systemImage: "books.vertical", description: Text("收藏功能尚未接入。随包作品已可离线阅读。")) }.tabItem { Label("诗集", systemImage: "books.vertical") }
-        }
+        TabView(selection: $selectedTab) {
+            NavigationStack { TodayView(application: application) }.tabItem { Label("今日", systemImage: "sun.max") }.tag(0)
+            NavigationStack { ExploreView(application: application) }.tabItem { Label("探索", systemImage: "map") }.tag(1)
+            CollectionView(store: collection, goToday: { selectedTab = 0 })
+                .tabItem { Label("诗集", systemImage: "books.vertical") }.tag(2)
+        }.environmentObject(collection)
     }
 }
 
@@ -97,7 +106,11 @@ struct PoemReaderView<Footer: View>: View {
                 // Original geometric ink motif: atmosphere only, no historical reconstruction.
                 HStack { Spacer(); Image(systemName: "cloud.fog").font(.system(size: 50, weight: .ultraLight)).foregroundStyle(PoetryStyle.ink.opacity(0.16)).accessibilityHidden(true) }
                 VStack(alignment: .leading, spacing: 12) {
-                    Text(poem.title).font(.system(.title2, design: .serif)).fixedSize(horizontal: false, vertical: true)
+                    HStack(alignment: .top) {
+                        Text(poem.title).font(.system(.title2, design: .serif)).fixedSize(horizontal: false, vertical: true)
+                        Spacer()
+                        FavoriteButton(poem: poem).labelStyle(.iconOnly)
+                    }
                     Text("\(poem.dynasty) · \(poem.poet)").foregroundStyle(.secondary)
                 }
                 VStack(alignment: .leading, spacing: 18) {

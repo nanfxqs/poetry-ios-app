@@ -42,7 +42,7 @@ struct CollectionView: View {
             .background(PoetryStyle.paper)
             .navigationTitle("诗集")
             .searchable(text: $search, prompt: "在收藏中搜索标题、诗句或诗人")
-            .navigationDestination(for: Poem.self) { poem in PoemReaderView(poem: poem) { EmptyView() } }
+            .navigationDestination(for: Poem.self) { poem in ReadingDestination(application: store.application, poem: poem) }
             .alert("诗集暂时无法更新", isPresented: Binding(get: { store.failure != nil }, set: { if !$0 { store.failure = nil } })) {
                 Button("重试") { store.refresh() }
                 Button("取消", role: .cancel) {}
