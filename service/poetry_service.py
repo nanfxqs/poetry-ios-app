@@ -134,6 +134,22 @@ def create_server(address, db_path, token):
             if not hmac.compare_digest(self.headers.get('Authorization', '').encode('utf-8'), ('Bearer ' + token).encode('utf-8')):
                 self.send_error(401)
                 return
+            if self.path == '/v1/media/swale-v1.wav':
+                try:
+                    audio = (Path(__file__).resolve().parent / 'media/swale-v1.wav').read_bytes()
+                except OSError:
+                    self.send_error(503)
+                    return
+                if hashlib.sha256(audio).hexdigest() != '2f1f2c9472d68e2acd51809bfed4174f46aab419cbd36f85194237af40558766':
+                    self.send_error(503)
+                    return
+                self.send_response(200)
+                self.send_header('Content-Type', 'audio/wav')
+                self.send_header('Content-Length', str(len(audio)))
+                self.send_header('Cache-Control', 'private, no-store')
+                self.end_headers()
+                self.wfile.write(audio)
+                return
             if self.path != '/v1/content':
                 self.send_error(404)
                 return
