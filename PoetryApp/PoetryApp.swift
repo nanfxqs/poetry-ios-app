@@ -41,27 +41,50 @@ struct RootView: View {
 
 struct TodayView: View {
     let application: PoetryApplication
-    @State private var poems: [Poem] = []
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var poem: Poem?
     @State private var failure: String?
     var body: some View {
         Group {
-            if let first = poems.first {
-                PoemReaderView(poem: first) {
-                    if poems.count > 1 {
-                        VStack(alignment: .leading, spacing: 18) {
-                            Text("随包作品").font(.headline)
-                            ForEach(poems.dropFirst()) { poem in
-                                NavigationLink { PoemReaderView(poem: poem) { EmptyView() } } label: {
-                                    VStack(alignment: .leading, spacing: 5) { Text(poem.title); Text(poem.poet).font(.caption).foregroundStyle(.secondary) }
-                                        .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
-                                }
-                            }
+            if let poem {
+                ReadingDestination(application: application, poem: poem)
+            } else {
+                ContentUnavailableView("暂无作品", systemImage: "book", description: Text(failure ?? "随包作品为空"))
+            }
+        }.navigationTitle("今日").navigationBarTitleDisplayMode(.inline)
+            .task { refresh() }
+            .onChange(of: scenePhase) { _, phase in if phase == .active { refresh() } }
+            .onReceive(NotificationCenter.default.publisher(for: .NSCalendarDayChanged)) { _ in refresh() }
+    }
+    private func refresh() {
+        do { poem = try application.dailyPoem(); failure = nil }
+        catch { failure = error.localizedDescription }
+    }
+}
+
+struct ReadingDestination: View {
+    let application: PoetryApplication
+    let poem: Poem
+    @State private var related: [RelatedPoem] = []
+    var body: some View {
+        PoemReaderView(poem: poem) {
+            if !related.isEmpty {
+                VStack(alignment: .leading, spacing: 18) {
+                    Text("相关作品").font(.headline)
+                    ForEach(related) { item in
+                        NavigationLink {
+                            ReadingDestination(application: application, poem: item.poem)
+                        } label: {
+                            VStack(alignment: .leading, spacing: 5) {
+                                Text(item.poem.title)
+                                Text(item.poem.poet).font(.caption).foregroundStyle(.secondary)
+                                Text(item.reason).font(.caption).foregroundStyle(.secondary)
+                            }.frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
                         }
                     }
                 }
-            } else { ContentUnavailableView("暂无作品", systemImage: "book", description: Text(failure ?? "随包作品为空")) }
-        }.navigationTitle("今日").navigationBarTitleDisplayMode(.inline)
-            .task { do { poems = try application.allPoems() } catch { failure = error.localizedDescription } }
+            }
+        }.task(id: poem.id) { related = (try? application.relatedPoems(to: poem)) ?? [] }
     }
 }
 
