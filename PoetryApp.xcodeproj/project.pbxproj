@@ -4,10 +4,10 @@
  classes = {};
  objectVersion = 56;
  objects = {
- A00000000000000000000001 = {isa = PBXProject; attributes = {LastUpgradeCheck = 1600; TargetAttributes = {A00000000000000000000002 = {CreatedOnToolsVersion = 16.0; }; }; }; buildConfigurationList = A00000000000000000000010; compatibilityVersion = "Xcode 14.0"; developmentRegion = zh-Hans; hasScannedForEncodings = 0; knownRegions = (en, "zh-Hans", Base); mainGroup = A00000000000000000000003; packageReferences = (A00000000000000000000020); productRefGroup = A00000000000000000000004; projectDirPath = ""; projectRoot = ""; targets = (A00000000000000000000002); };
+ A00000000000000000000001 = {isa = PBXProject; attributes = {LastUpgradeCheck = 1600; TargetAttributes = {A00000000000000000000002 = {CreatedOnToolsVersion = 16.0; }; }; }; buildConfigurationList = A00000000000000000000010; compatibilityVersion = "Xcode 14.0"; developmentRegion = zh-Hans; hasScannedForEncodings = 0; knownRegions = (en, "zh-Hans", Base); mainGroup = A00000000000000000000003; packageReferences = (A00000000000000000000020); productRefGroup = A00000000000000000000004; projectDirPath = ""; projectRoot = ""; targets = (A00000000000000000000002, B00000000000000000000001); };
  A00000000000000000000002 = {isa = PBXNativeTarget; buildConfigurationList = A00000000000000000000011; buildPhases = (A00000000000000000000005, A00000000000000000000006, A00000000000000000000007); buildRules = (); dependencies = (); name = PoetryApp; packageProductDependencies = (A00000000000000000000021); productName = PoetryApp; productReference = A00000000000000000000008; productType = "com.apple.product-type.application"; };
- A00000000000000000000003 = {isa = PBXGroup; children = (A00000000000000000000009, A00000000000000000000004); sourceTree = "<group>"; };
- A00000000000000000000004 = {isa = PBXGroup; children = (A00000000000000000000008); name = Products; sourceTree = "<group>"; };
+ A00000000000000000000003 = {isa = PBXGroup; children = (A00000000000000000000009, B00000000000000000000002, A00000000000000000000004); sourceTree = "<group>"; };
+ A00000000000000000000004 = {isa = PBXGroup; children = (A00000000000000000000008, B00000000000000000000003); name = Products; sourceTree = "<group>"; };
  A00000000000000000000005 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (A0000000000000000000000A); runOnlyForDeploymentPostprocessing = 0; };
  A00000000000000000000006 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (A00000000000000000000022); runOnlyForDeploymentPostprocessing = 0; };
  A00000000000000000000007 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
@@ -23,6 +23,18 @@
  A00000000000000000000020 = {isa = XCLocalSwiftPackageReference; relativePath = .; };
  A00000000000000000000021 = {isa = XCSwiftPackageProductDependency; productName = PoetryCore; };
  A00000000000000000000022 = {isa = PBXBuildFile; productRef = A00000000000000000000021; };
+ B00000000000000000000001 = {isa = PBXNativeTarget; buildConfigurationList = B00000000000000000000007; buildPhases = (B00000000000000000000005, B00000000000000000000006); buildRules = (); dependencies = (B0000000000000000000000A); name = PoetryAppUITests; productName = PoetryAppUITests; productReference = B00000000000000000000003; productType = "com.apple.product-type.bundle.ui-testing"; };
+ B00000000000000000000002 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoetryAppUITests/OfflineReaderUITests.swift; sourceTree = "<group>"; };
+ B00000000000000000000003 = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PoetryAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+ B00000000000000000000004 = {isa = PBXBuildFile; fileRef = B00000000000000000000002; };
+ B00000000000000000000005 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (B00000000000000000000004); runOnlyForDeploymentPostprocessing = 0; };
+ B00000000000000000000006 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+ B00000000000000000000007 = {isa = XCConfigurationList; buildConfigurations = (B00000000000000000000008, B00000000000000000000009); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+ B00000000000000000000008 = {isa = XCBuildConfiguration; buildSettings = {CODE_SIGN_STYLE = Automatic; DEVELOPMENT_TEAM = AWZ52L37YW; GENERATE_INFOPLIST_FILE = YES; IPHONEOS_DEPLOYMENT_TARGET = 17.0; PRODUCT_BUNDLE_IDENTIFIER = com.nanfl.PoetryAppUITests; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = 1; TEST_TARGET_NAME = PoetryApp; }; name = Debug; };
+ B00000000000000000000009 = {isa = XCBuildConfiguration; buildSettings = {CODE_SIGN_STYLE = Automatic; DEVELOPMENT_TEAM = AWZ52L37YW; GENERATE_INFOPLIST_FILE = YES; IPHONEOS_DEPLOYMENT_TARGET = 17.0; PRODUCT_BUNDLE_IDENTIFIER = com.nanfl.PoetryAppUITests; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = 1; TEST_TARGET_NAME = PoetryApp; }; name = Release; };
+ B0000000000000000000000A = {isa = PBXTargetDependency; target = A00000000000000000000002; targetProxy = B0000000000000000000000B; };
+ B0000000000000000000000B = {isa = PBXContainerItemProxy; containerPortal = A00000000000000000000001; proxyType = 1; remoteGlobalIDString = A00000000000000000000002; remoteInfo = PoetryApp; };
+
  };
  rootObject = A00000000000000000000001;
 }
