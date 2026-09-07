@@ -41,22 +41,9 @@ Mac mini 不需要连接 iPhone，也不需要运行模拟器；iPhone 只需通
 
 ### 1. 创建 Xcode 工程
 
-目标仓库目前尚未包含 Xcode 工程。先在 Mac 上创建 iOS App：
+仓库已包含 `PoetryApp.xcodeproj`、共享 Scheme `PoetryApp` 和本地 Swift Package `PoetryCore`。部署下限为 iOS 17，默认仅竖屏；已识别目标为 iPhone 15 Pro（iOS 26.4.1）。开发团队通过 Xcode 自动签名配置，Bundle ID 为 `com.nanfl.PoetryApp`。
 
-- Product Name：`PoetryApp`
-- Interface：推荐 SwiftUI
-- Language：Swift
-- Team：登录的免费 Apple Personal Team
-- Organization Identifier：`com.nanfl`
-- Bundle Identifier：`com.nanfl.PoetryApp`
-- Deployment Target：不得高于真机的 iOS 版本
-- Orientation：按当前约定只启用竖屏
-
-将工程保存在：
-
-```text
-/Users/nanfm/Projects/poetry-ios-app/PoetryApp.xcodeproj
-```
+应用层测试在 Mac 仓库目录运行 `swift test`，使用真实临时 SQLite。应用启动时将随包六首作品事务写入本地数据库，重启直接读取本地内容；源码和资源均以 Linux 仓库为准。
 
 ### 2. Linux 依赖
 
