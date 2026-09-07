@@ -4,11 +4,12 @@ import CryptoKit
 @testable import PoetryCore
 
 final class ContentUpdateTests: XCTestCase {
-    private func package(_ poems: [Poem], version: Int = 1, missingAuthor: Bool = false) throws -> Data {
+    private func package(_ poems: [Poem], version: Int = 1, missingAuthor: Bool = false, relationships: [Relationship] = []) throws -> Data {
         let objects = try JSONSerialization.jsonObject(with: JSONEncoder().encode(poems))
         let sources = try JSONSerialization.jsonObject(with: JSONEncoder().encode(poems[0].sources))
         let poets: [[String: Any]] = missingAuthor ? [] : Set(poems.map(\.poetID)).map { ["id": $0, "name": $0, "dynasty": "唐", "sources": sources] }
-        let payload = String(decoding: try JSONSerialization.data(withJSONObject: ["poems": objects, "catalogs": ["poets": poets, "places": [], "placeAssociations": [], "lifeEvents": [], "tags": [:]]]), as: UTF8.self)
+        let relations = try JSONSerialization.jsonObject(with: JSONEncoder().encode(relationships))
+        let payload = String(decoding: try JSONSerialization.data(withJSONObject: ["poems": objects, "catalogs": ["poets": poets, "places": [], "placeAssociations": [], "lifeEvents": [], "relationships": relations, "tags": [:]]]), as: UTF8.self)
         return try JSONEncoder().encode(ContentPackage(version: version, sha256: SHA256.hash(data: Data(payload.utf8)).map { String(format: "%02x", $0) }.joined(), payload: payload))
     }
     func testUpdatePreservesSavedDayAndRemovedFavoriteAcrossRestart() throws {
@@ -50,4 +51,32 @@ final class ContentUpdateTests: XCTestCase {
         XCTAssertEqual(try app.favoritePoems().first?.poem, selected)
         XCTAssertEqual(try app.contentVersion(), 0)
     }
+    func testRelationshipCatalogUpdatesAtomicallyAndRejectsWrongEvidence() throws {
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let url = directory.appendingPathComponent("relationships.sqlite")
+        let app = try PoetryApplication(databaseURL: url)
+        let poems = try app.allPoems()
+        let relations = try PoetryApplication.bundledRelationships()
+        try app.installContentPackage(data: package(poems, relationships: relations))
+        let reopened = try PoetryApplication(databaseURL: url)
+        XCTAssertEqual(try reopened.allRelationships(), relations)
+        for mutation in 0..<4 {
+            var invalid = relations
+            switch mutation {
+            case 0: invalid[0].evidencePoemIDs = ["missing-poem"]
+            case 1: invalid[0].evidencePoemIDs = ["zeng-meng-haoran"]
+            case 2: invalid[0].toPoetID = "unknown"
+            default: invalid[0].sources = []
+            }
+            XCTAssertThrowsError(try reopened.installContentPackage(data: package(poems, version: 2, relationships: invalid)))
+            XCTAssertEqual(try reopened.allRelationships(), relations)
+            XCTAssertEqual(try reopened.contentVersion(), 1)
+        }
+        try reopened.installContentPackage(data: package(poems, version: 2, relationships: []))
+        let empty = try PoetryApplication(databaseURL: url)
+        XCTAssertTrue(try empty.relationshipNeighborhood(poetID: "li-bai").relationships.isEmpty)
+        XCTAssertFalse(try empty.relationshipNeighborhood(poetID: "li-bai").works.isEmpty)
+    }
+
 }

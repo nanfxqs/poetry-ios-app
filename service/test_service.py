@@ -12,7 +12,7 @@ def package(version=1, change=None):
     root = Path(__file__).resolve().parents[1]
     poems = json.loads((root / 'Sources/PoetryCore/Resources/seed.json').read_text())
     poets = [dict(id=p, name=p, dynasty='唐', sources=poems[0]['sources']) for p in sorted({p['poetID'] for p in poems})]
-    payload = dict(poems=poems, catalogs=dict(poets=poets, places=[], placeAssociations=[], tags={}, lifeEvents=[]))
+    payload = dict(poems=poems, catalogs=dict(poets=poets, places=[], placeAssociations=[], tags={}, lifeEvents=[], relationships=[]))
     if change:
         change(payload)
     text = json.dumps(payload, ensure_ascii=False)
@@ -53,6 +53,20 @@ class ServiceTests(unittest.TestCase):
                     package(change=lambda c: c['catalogs']['tags'].update(missing=dict(imagery=[], topics=[], emotions=[])))]:
             with self.assertRaises((ValueError, KeyError)):
                 validate(raw)
+
+    def test_relationship_catalog_validates_exact_evidence(self):
+        root = Path(__file__).resolve().parents[1]
+        relationships = json.loads((root / 'Sources/PoetryCore/Resources/relationships.json').read_text())
+        def with_relations(content):
+            content['catalogs']['relationships'] = json.loads(json.dumps(relationships))
+        validate(package(change=with_relations))
+        for field, value in [('evidencePoemIDs', ['missing']), ('evidencePoemIDs', ['zeng-meng-haoran']),
+                             ('toPoetID', 'unknown'), ('sources', [])]:
+            def bad(content):
+                with_relations(content)
+                content['catalogs']['relationships'][0][field] = value
+            with self.assertRaises(ValueError):
+                validate(package(change=bad))
 
 
 if __name__ == '__main__':
