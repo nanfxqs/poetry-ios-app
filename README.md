@@ -173,3 +173,15 @@ python3 scripts/stitch-client.py get_project /tmp/stitch-args/project.json /tmp/
 
 回归验证：`python3 -m unittest discover -s tests -p test_stitch_client.py`。
 详细排查结论见 `docs/design/stitch-connection-diagnosis.md`。
+
+## 个人服务快照与恢复
+
+独立 Poetry Compose 项目每天通过 SQLite Online Backup API 备份内容及收藏修订，成功后保留最近七份，快照卷与数据卷分开。Mac 同盘快照不是异地副本。
+
+Linux 手动导出（文件名从 `docker compose exec -T snapshots ls /snapshots` 取得）：
+
+```sh
+./scripts/export-poetry-snapshot.sh poetry-实际文件名.sqlite /tmp/poetry-export-新目录
+```
+
+脚本从 `.env.ios-device`（可由 `IOS_ENV_FILE` 指定）读取 `IOS_MAC_HOST` 和 `IOS_MAC_PROJECT`，保留远端 SHA-256 记录并在 Linux 核对文件与 SQLite 完整性。恢复只允许写入新路径，先在独立端口验证内容及主动恢复收藏，再切换正式地址；步骤、失败处理和实际验证边界见 [快照与灾后恢复](docs/implementation/ticket-20-recovery.md)。
