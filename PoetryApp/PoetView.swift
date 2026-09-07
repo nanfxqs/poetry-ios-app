@@ -28,6 +28,7 @@ struct PoetView: View {
                         Text("诗人资料暂未收录").font(.headline)
                         Text("仍可阅读下方已收录的作品。").foregroundStyle(.secondary)
                     }
+                    NavigationLink("人物关系") { RelationsView(application: application, poetID: poetID) }.frame(minHeight: 44)
                     Divider()
                     Text("已收录作品 · \(overview.works.count) 首").font(.headline)
                     Text("仅展示本应用已收录的作品，非完整全集。").font(.footnote).foregroundStyle(.secondary)
