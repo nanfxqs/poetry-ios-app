@@ -7,7 +7,7 @@ public struct FavoritePoem: Identifiable, Equatable, Codable {
 }
 
 extension PoetryApplication {
-    private func prepareCollection() throws {
+    func prepareCollection() throws {
         // A snapshot deliberately has no foreign key to replaceable content.
         try database.execute("CREATE TABLE IF NOT EXISTS favorites (sequence INTEGER PRIMARY KEY AUTOINCREMENT, poem_id TEXT NOT NULL UNIQUE, payload TEXT NOT NULL, saved_at REAL NOT NULL)")
     }
@@ -21,12 +21,22 @@ extension PoetryApplication {
     public func saveFavorite(_ poem: Poem, at date: Date = Date()) throws {
         try prepareCollection()
         let payload = String(decoding: try JSONEncoder().encode(poem), as: UTF8.self)
-        try database.execute("INSERT OR IGNORE INTO favorites (poem_id, payload, saved_at) VALUES (?, ?, ?)", [.text(poem.id), .text(payload), .real(date.timeIntervalSince1970)])
+        try prepareBackup()
+        try database.transaction {
+            guard try !isFavorite(id: poem.id) else { return }
+            try database.execute("INSERT INTO favorites (poem_id, payload, saved_at) VALUES (?, ?, ?)", [.text(poem.id), .text(payload), .real(date.timeIntervalSince1970)])
+            try advanceCollectionRevision()
+        }
     }
 
     public func removeFavorite(id: String) throws {
         try prepareCollection()
-        try database.execute("DELETE FROM favorites WHERE poem_id = ?", [.text(id)])
+        try prepareBackup()
+        try database.transaction {
+            guard try isFavorite(id: id) else { return }
+            try database.execute("DELETE FROM favorites WHERE poem_id = ?", [.text(id)])
+            try advanceCollectionRevision()
+        }
     }
 
     public func favoritePoems(search: String = "") throws -> [FavoritePoem] {

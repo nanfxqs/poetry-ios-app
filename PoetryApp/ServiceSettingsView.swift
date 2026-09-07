@@ -26,6 +26,7 @@ enum PoetryServiceSettings {
 }
 
 struct ServiceSettingsView: View {
+    @EnvironmentObject private var collection: CollectionStore
     let application: PoetryApplication
     @State private var address = ""
     @State private var token = ""
@@ -37,8 +38,20 @@ struct ServiceSettingsView: View {
                 TextField("私网 HTTPS 地址", text: $address).textInputAutocapitalization(.never).autocorrectionDisabled().keyboardType(.URL)
                 SecureField("访问凭据", text: $token).textInputAutocapitalization(.never).autocorrectionDisabled()
                 Button("保存连接") {
-                    do { try PoetryServiceSettings.save(connection()); message = "连接已安全保存。" }
+                    do { try PoetryServiceSettings.save(connection()); message = "连接已安全保存。"; Task { await collection.attemptBackup() } }
                     catch { message = "请检查 HTTPS 地址与访问凭据。" }
+                }
+            }
+            Section("收藏备份") {
+                Text(collection.backupMessage).font(.footnote).accessibilityIdentifier("collectionBackupStatus")
+                Button("备份 / 重试") { Task { await collection.attemptBackup() } }.disabled(collection.backupBusy)
+                Button("查看远端备份") { Task { await collection.previewRestore() } }.disabled(collection.backupBusy)
+                if let receipt = collection.restorePreview {
+                    Text("设备：" + receipt.snapshot.deviceID)
+                    Text("修订：\(receipt.snapshot.revision) · \(receipt.snapshot.favorites.count) 首")
+                    Text("备份时间：" + Date(timeIntervalSince1970: receipt.receivedAt).formatted())
+                    Text("恢复将替换本机收藏，并沿用此备份的设备标识。")
+                    Button("确认恢复此备份", role: .destructive) { collection.restore() }.disabled(collection.backupBusy)
                 }
             }
             Section("内容") {

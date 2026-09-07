@@ -32,6 +32,7 @@ struct RootView: View {
     let application: PoetryApplication
     @StateObject private var collection: CollectionStore
     @State private var selectedTab = 0
+    @Environment(\.scenePhase) private var scenePhase
 
     init(application: PoetryApplication) {
         self.application = application
@@ -50,6 +51,10 @@ struct RootView: View {
             CollectionView(store: collection, goToday: { selectedTab = 0 })
                 .tabItem { Label("诗集", systemImage: "books.vertical") }.tag(2)
         }.environmentObject(collection)
+            .task { await collection.attemptBackup() }
+            .onChange(of: scenePhase) { _, phase in
+                if phase == .active { Task { await collection.attemptBackup() } }
+            }
     }
 }
 
