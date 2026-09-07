@@ -110,7 +110,14 @@ struct PoemReaderView<Footer: View>: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 28) {
                 // Original geometric ink motif: atmosphere only, no historical reconstruction.
-                HStack { Spacer(); Image(systemName: "cloud.fog").font(.system(size: 50, weight: .ultraLight)).foregroundStyle(PoetryStyle.ink.opacity(0.16)).accessibilityHidden(true) }
+                HStack {
+                    Spacer()
+                    Image(systemName: "cloud.fog")
+                        .font(.system(size: 50, weight: .ultraLight))
+                        .foregroundStyle(PoetryStyle.ink.opacity(0.16))
+                        .accessibilityHidden(true)
+                    AudioButton()
+                }
                 VStack(alignment: .leading, spacing: 12) {
                     HStack(alignment: .top) {
                         Text(poem.title).font(.system(.title2, design: .serif)).fixedSize(horizontal: false, vertical: true)
