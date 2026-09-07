@@ -176,7 +176,7 @@ python3 scripts/stitch-client.py get_project /tmp/stitch-args/project.json /tmp/
 
 ## 个人服务快照与恢复
 
-独立 Poetry Compose 项目每天通过 SQLite Online Backup API 备份内容及收藏修订，成功后保留最近七份，快照卷与数据卷分开。Mac 同盘快照不是异地副本。
+独立 Poetry Compose 项目每天通过 SQLite Online Backup API 备份内容及收藏修订，成功后保留最近七个 UTC 自然日每日最新一份，快照卷与数据卷分开。Mac 同盘快照不是异地副本。
 
 Linux 手动导出（文件名从 `docker compose exec -T snapshots ls /snapshots` 取得）：
 

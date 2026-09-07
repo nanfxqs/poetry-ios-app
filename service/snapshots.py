@@ -58,8 +58,13 @@ def snapshot(database, directory):
     name = datetime.now(timezone.utc).strftime('poetry-%Y%m%dT%H%M%S.%fZ-') + uuid.uuid4().hex + '.sqlite'
     result = copy_database(database, directory / name)
     # Rotation follows successful publication, never a failed backup.
-    for old in sorted(directory.glob('poetry-*.sqlite'), reverse=True)[7:]:
-        old.unlink()
+    kept_days = set()
+    for old in sorted(directory.glob('poetry-*.sqlite'), reverse=True):
+        day = old.name[7:15]  # UTC YYYYMMDD in the generated filename
+        if day in kept_days or len(kept_days) >= 7:
+            old.unlink()
+        else:
+            kept_days.add(day)
     return result
 
 
@@ -89,14 +94,13 @@ def main():
         validate(args.source)
         print(json.dumps(dict(sha256=digest(args.source))))
     elif args.command == 'daily':
-        # Persisted snapshot age prevents restart loops from consuming daily retention.
+        # UTC calendar days remain stable across restarts and local timezone changes.
         while True:
             try:
                 copies = list(Path(args.destination).glob('poetry-*.sqlite'))
-                newest = max((p.stat().st_mtime for p in copies), default=0)
-                remaining = 86400 - (time.time() - newest)
-                if remaining > 0:
-                    time.sleep(min(remaining, 60))
+                today = datetime.now(timezone.utc).strftime('%Y%m%d')
+                if any(p.name[7:15] == today for p in copies):
+                    time.sleep(60)
                     continue
                 print(snapshot(args.source, args.destination), flush=True)
             except (OSError, sqlite3.Error, ValueError) as error:
