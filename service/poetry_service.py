@@ -1,5 +1,6 @@
 """Private poetry JSON API and local maintainer CLI; Python standard library only."""
 import argparse
+import collection_backup
 from contextlib import contextmanager
 import hashlib
 import hmac
@@ -130,6 +131,36 @@ def create_server(address, db_path, token):
         def log_message(self, *_):
             pass  # URLs, credentials and payloads never enter access logs.
 
+        def send_json(self, value):
+            raw = json.dumps(value, allow_nan=False).encode()
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.send_header('Content-Length', str(len(raw)))
+            self.send_header('Cache-Control', 'no-store')
+            self.end_headers()
+            self.wfile.write(raw)
+
+        def do_PUT(self):
+            if not hmac.compare_digest(self.headers.get('Authorization', '').encode(), ('Bearer ' + token).encode()):
+                self.send_error(401)
+                return
+            if self.path != '/v1/backup':
+                self.send_error(404)
+                return
+            try:
+                size = int(self.headers.get('Content-Length', '0'))
+                if not 0 < size <= MAX_PACKAGE:
+                    self.send_error(413)
+                    return
+                self.connection.settimeout(30)
+                snapshot = json.loads(self.rfile.read(size))
+                with database(db_path) as db:
+                    receipt = collection_backup.save(db, snapshot)
+            except (ValueError, KeyError, TypeError, AttributeError):
+                self.send_error(409)
+                return
+            self.send_json(receipt)
+
         def do_GET(self):
             if not hmac.compare_digest(self.headers.get('Authorization', '').encode('utf-8'), ('Bearer ' + token).encode('utf-8')):
                 self.send_error(401)
@@ -149,6 +180,15 @@ def create_server(address, db_path, token):
                 self.send_header('Cache-Control', 'private, no-store')
                 self.end_headers()
                 self.wfile.write(audio)
+                return
+            if self.path == '/v1/backup':
+                with database(db_path) as db:
+                    receipt = collection_backup.latest(db)
+                if receipt is None:
+                    self.send_error(404)
+                else:
+                    self.send_json(receipt)
+
                 return
             if self.path != '/v1/content':
                 self.send_error(404)
