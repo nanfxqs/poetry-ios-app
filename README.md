@@ -41,22 +41,9 @@ Mac mini 不需要连接 iPhone，也不需要运行模拟器；iPhone 只需通
 
 ### 1. 创建 Xcode 工程
 
-目标仓库目前尚未包含 Xcode 工程。先在 Mac 上创建 iOS App：
+仓库已包含 `PoetryApp.xcodeproj`、共享 Scheme `PoetryApp` 和本地 Swift Package `PoetryCore`。部署下限为 iOS 17，默认仅竖屏；已识别目标为 iPhone 15 Pro（iOS 26.4.1）。开发团队通过 Xcode 自动签名配置，Bundle ID 为 `com.nanfl.PoetryApp`。
 
-- Product Name：`PoetryApp`
-- Interface：推荐 SwiftUI
-- Language：Swift
-- Team：登录的免费 Apple Personal Team
-- Organization Identifier：`com.nanfl`
-- Bundle Identifier：`com.nanfl.PoetryApp`
-- Deployment Target：不得高于真机的 iOS 版本
-- Orientation：按当前约定只启用竖屏
-
-将工程保存在：
-
-```text
-/Users/nanfm/Projects/poetry-ios-app/PoetryApp.xcodeproj
-```
+应用层测试在 Mac 仓库目录运行 `swift test`，使用真实临时 SQLite。应用启动时将随包六首作品事务写入本地数据库，重启直接读取本地内容；源码和资源均以 Linux 仓库为准。
 
 ### 2. Linux 依赖
 
@@ -186,3 +173,15 @@ python3 scripts/stitch-client.py get_project /tmp/stitch-args/project.json /tmp/
 
 回归验证：`python3 -m unittest discover -s tests -p test_stitch_client.py`。
 详细排查结论见 `docs/design/stitch-connection-diagnosis.md`。
+
+## 个人服务快照与恢复
+
+独立 Poetry Compose 项目每天通过 SQLite Online Backup API 备份内容及收藏修订，成功后保留最近七个 UTC 自然日每日最新一份，快照卷与数据卷分开。Mac 同盘快照不是异地副本。
+
+Linux 手动导出（文件名从 `docker compose exec -T snapshots ls /snapshots` 取得）：
+
+```sh
+./scripts/export-poetry-snapshot.sh poetry-实际文件名.sqlite /tmp/poetry-export-新目录
+```
+
+脚本从 `.env.ios-device`（可由 `IOS_ENV_FILE` 指定）读取 `IOS_MAC_HOST` 和 `IOS_MAC_PROJECT`，保留远端 SHA-256 记录并在 Linux 核对文件与 SQLite 完整性。恢复只允许写入新路径，先在独立端口验证内容及主动恢复收藏，再切换正式地址；步骤、失败处理和实际验证边界见 [快照与灾后恢复](docs/implementation/ticket-20-recovery.md)。

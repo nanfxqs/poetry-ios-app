@@ -6,3 +6,7 @@ artifacts/
 .DS_Store
 
 __pycache__/
+.build/
+.swiftpm/
+DerivedData/
+xcuserdata/

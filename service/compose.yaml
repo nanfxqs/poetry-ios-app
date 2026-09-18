@@ -1,0 +1,32 @@
+name: poetry-private
+services:
+  api:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8787:8080"
+    environment:
+      POETRY_TOKEN_FILE: /run/secrets/poetry_token
+    secrets:
+      - poetry_token
+    volumes:
+      - poetry_data:/data
+    read_only: true
+    tmpfs:
+      - /tmp
+  snapshots:
+    build: .
+    restart: unless-stopped
+    command: ["python", "snapshots.py", "daily", "/data/poetry.sqlite", "/snapshots"]
+    volumes:
+      - poetry_data:/data
+      - poetry_snapshots:/snapshots
+    read_only: true
+    tmpfs:
+      - /tmp
+secrets:
+  poetry_token:
+    file: ${POETRY_TOKEN_FILE:?Set an absolute private token file path}
+volumes:
+  poetry_data:
+  poetry_snapshots:
